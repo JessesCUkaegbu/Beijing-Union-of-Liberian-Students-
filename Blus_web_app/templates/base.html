@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %} StudentHub {% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red:      '#E02B20',
+              'red-dk': '#B8221A',
+              'red-lt': '#FDECEA',
+              blue:     '#1A2B6B',
+              'blue-md':'#2340A8',
+              'blue-lt':'#EEF1FB',
+            }
+          },
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            body:    ['DM Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { font-family: 'DM Sans', sans-serif; }
+    h1,h2,h3,h4,.font-display { font-family: 'Syne', sans-serif; }
+
+    .nav-link {
+      position: relative;
+      color: #ffffffcc;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.2s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 2px;
+      background: #E02B20;
+      transition: width 0.25s ease;
+    }
+    .nav-link:hover { color: #fff; }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link.active { color: #fff; }
+    .nav-link.active::after { width: 100%; }
+
+    .btn-red {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: #E02B20; color: #fff;
+      padding: 0.625rem 1.5rem;
+      border-radius: 9999px;
+      font-weight: 600; font-size: 0.875rem;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-red:hover { background: #B8221A; transform: translateY(-1px); }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      border: 1.5px solid #E02B20; color: #E02B20;
+      padding: 0.625rem 1.5rem;
+      border-radius: 9999px;
+      font-weight: 600; font-size: 0.875rem;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+    }
+    .btn-outline:hover { background: #E02B20; color: #fff; transform: translateY(-1px); }
+
+    .section-tag {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: #EEF1FB; color: #2340A8;
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 0.3rem 0.8rem; border-radius: 9999px;
+    }
+    .section-tag::before {
+      content: ''; width: 6px; height: 6px;
+      background: #E02B20; border-radius: 50%;
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(24px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.6s ease both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+  </style>
+</head>
+<body class="bg-white text-gray-900 antialiased">
+
+  <!-- NAV -->
+  <header class="bg-brand-blue sticky top-0 z-50 shadow-lg">
+    <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2">
+        <span class="w-8 h-8 rounded-lg bg-brand-red flex items-center justify-center">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 2L14 5.5V10.5L8 14L2 10.5V5.5L8 2Z" fill="white"/>
+          </svg>
+        </span>
+        <span class="font-display font-700 text-white text-lg tracking-tight">BLUS</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8">
+        <a href="/" class="nav-link {% block nav_home %}{% endblock %}">Home</a>
+        <a href="/about/" class="nav-link {% block nav_about %}{% endblock %}">About</a>
+        <a href="/leadership/" class="nav-link {% block nav_leadership %}{% endblock %}">Leadership</a>
+        <a href="/blog/" class="nav-link {% block nav_blog %}{% endblock %}">Blog</a>
+        <a href="/contact/" class="nav-link {% block nav_contact %}{% endblock %}">Contact</a>
+      </div>
+
+      <a href="/contact/" class="btn-red text-xs">Get in Touch</a>
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-brand-blue text-white">
+    <div class="max-w-7xl mx-auto px-6 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="w-8 h-8 rounded-lg bg-brand-red flex items-center justify-center">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 2L14 5.5V10.5L8 14L2 10.5V5.5L8 2Z" fill="white"/>
+              </svg>
+            </span>
+            <span class="font-display font-bold text-white text-lg">BLUS</span>
+          </div>
+          <p class="text-white/60 text-sm leading-relaxed max-w-xs">
+            Empowering students to connect, grow, and thrive together. A community built on excellence.
+          </p>
+          <div class="flex gap-3 mt-6">
+            <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-brand-red transition-colors flex items-center justify-center text-white text-xs font-bold">f</a>
+            <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-brand-red transition-colors flex items-center justify-center text-white text-xs font-bold">in</a>
+            <a href="#" class="w-9 h-9 rounded-full bg-white/10 hover:bg-brand-red transition-colors flex items-center justify-center text-white text-xs font-bold">tw</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-display font-semibold text-sm tracking-widest uppercase text-white/40 mb-4">Platform</h4>
+          <ul class="space-y-2.5">
+            <li><a href="/" class="text-white/70 hover:text-white text-sm transition-colors">Home</a></li>
+            <li><a href="/about/" class="text-white/70 hover:text-white text-sm transition-colors">About</a></li>
+            <li><a href="/leadership/" class="text-white/70 hover:text-white text-sm transition-colors">Leadership</a></li>
+            <li><a href="/blog/" class="text-white/70 hover:text-white text-sm transition-colors">Blog</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-display font-semibold text-sm tracking-widest uppercase text-white/40 mb-4">Contact</h4>
+          <ul class="space-y-2.5 text-sm text-white/70">
+            <li>support@studenthub.org</li>
+            <li>+1 (800) 555-0100</li>
+            <li class="pt-2">
+              <a href="/contact/" class="btn-red text-xs">Send a Message</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-white/10 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
+        <p class="text-white/40 text-xs">© 2025 StudentHub. All rights reserved.</p>
+        <p class="text-white/40 text-xs">Built with Django + Tailwind</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

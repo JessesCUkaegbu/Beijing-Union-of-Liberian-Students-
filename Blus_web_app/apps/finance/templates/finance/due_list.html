@@ -1,0 +1,14 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Due List{% endblock %}
+
+{% block admin_content %}
+<section class="rounded-lg bg-white p-6 shadow">
+    <h1 class="mb-4 text-2xl font-bold">Due List</h1>
+    {% for due in dues %}
+        <p>{{ due.student_name }} - {{ due.amount_due }} - {{ due.due_date }}</p>
+    {% empty %}
+        <p>No dues recorded.</p>
+    {% endfor %}
+</section>
+{% endblock %}

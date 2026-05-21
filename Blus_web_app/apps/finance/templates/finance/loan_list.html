@@ -1,0 +1,14 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Loan List{% endblock %}
+
+{% block admin_content %}
+<section class="rounded-lg bg-white p-6 shadow">
+    <h1 class="mb-4 text-2xl font-bold">Loan List</h1>
+    {% for loan in loans %}
+        <p>{{ loan.borrower_name }} - {{ loan.amount }} - {{ loan.issued_at }}</p>
+    {% empty %}
+        <p>No loans recorded.</p>
+    {% endfor %}
+</section>
+{% endblock %}

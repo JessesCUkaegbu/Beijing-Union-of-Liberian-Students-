@@ -1,0 +1,10 @@
+{
+  "name": "student-platform-tailwind",
+  "private": true,
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ../static/css/main.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.13"
+  }
+}

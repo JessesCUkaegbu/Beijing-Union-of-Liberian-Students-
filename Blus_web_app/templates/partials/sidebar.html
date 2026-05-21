@@ -1,0 +1,9 @@
+<aside class="rounded-lg bg-white p-6 shadow">
+    <h2 class="mb-4 text-lg font-semibold">Admin Panel</h2>
+    <div class="space-y-2 text-sm">
+        <p><a href="{% url 'students:list' %}">Students</a></p>
+        <p><a href="{% url 'finance:overview' %}">Finance</a></p>
+        <p><a href="{% url 'events:add' %}">Add Event</a></p>
+        <p><a href="{% url 'blog:add' %}">Add Post</a></p>
+    </div>
+</aside>

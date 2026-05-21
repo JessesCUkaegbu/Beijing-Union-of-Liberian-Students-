@@ -1,0 +1,13 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Student Detail{% endblock %}
+
+{% block admin_content %}
+<section class="rounded-lg bg-white p-6 shadow">
+    <h1 class="text-2xl font-bold">{{ student.full_name }}</h1>
+    <p>Student ID: {{ student.student_id }}</p>
+    <p>Email: {{ student.email }}</p>
+    <p>Course: {{ student.course }}</p>
+    <a href="{% url 'students:edit' student.pk %}" class="mt-4 inline-block rounded bg-slate-900 px-4 py-2 text-white">Edit</a>
+</section>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Edit Post{% endblock %}
+
+{% block admin_content %}
+<section class="rounded-lg bg-white p-6 shadow">
+    <h1 class="mb-4 text-2xl font-bold">Edit Post</h1>
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="rounded bg-slate-900 px-4 py-2 text-white">Update</button>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,11 @@
+<header class="bg-slate-900 text-white">
+    <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+        <a href="{% url 'home' %}" class="text-lg font-semibold">BLUS</a>
+        <div class="flex gap-4 text-sm">
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'events:list' %}">Events</a>
+            <a href="{% url 'blog:list' %}">Blog</a>
+            <a href="{% url 'contact' %}">Contact</a>
+        </div>
+    </nav>
+</header>

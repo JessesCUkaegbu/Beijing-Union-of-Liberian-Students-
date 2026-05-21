@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Events{% endblock %}
+
+{% block content %}
+<section class="space-y-4">
+    <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold">Events</h1>
+        <a href="{% url 'events:add' %}" class="rounded bg-slate-900 px-4 py-2 text-white">Add event</a>
+    </div>
+    <div class="rounded-lg bg-white p-6 shadow">
+        {% for event in events %}
+            <p><a href="{% url 'events:detail' event.pk %}" class="font-medium text-slate-900">{{ event.title }}</a> - {{ event.event_date }}</p>
+        {% empty %}
+            <p>No events available yet.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

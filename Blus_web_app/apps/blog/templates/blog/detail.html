@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Blog Detail{% endblock %}
+
+{% block content %}
+<article class="rounded-lg bg-white p-6 shadow">
+    <h1 class="text-2xl font-bold">{{ post.title }}</h1>
+    <p class="text-sm text-slate-500">{{ post.created_at }}</p>
+    <div class="mt-4">{{ post.body }}</div>
+</article>
+{% endblock %}

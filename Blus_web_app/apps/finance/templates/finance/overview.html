@@ -1,0 +1,14 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Finance Overview{% endblock %}
+
+{% block admin_content %}
+<section class="space-y-4">
+    <h1 class="text-2xl font-bold">Finance Overview</h1>
+    <div class="grid gap-4 md:grid-cols-3">
+        <div class="rounded-lg bg-white p-6 shadow">Outstanding dues: {{ dues_count }}</div>
+        <div class="rounded-lg bg-white p-6 shadow">Active loans: {{ loans_count }}</div>
+        <div class="rounded-lg bg-white p-6 shadow">Recent records: {{ records|length }}</div>
+    </div>
+</section>
+{% endblock %}

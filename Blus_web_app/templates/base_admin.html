@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="grid gap-6 md:grid-cols-[240px_1fr]">
+    {% include "partials/sidebar.html" %}
+    <section>
+        {% block admin_content %}{% endblock %}
+    </section>
+</div>
+{% endblock %}

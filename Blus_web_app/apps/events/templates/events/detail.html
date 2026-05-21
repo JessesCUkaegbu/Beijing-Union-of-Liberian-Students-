@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Event Detail{% endblock %}
+
+{% block content %}
+<section class="rounded-lg bg-white p-6 shadow">
+    <h1 class="text-2xl font-bold">{{ event.title }}</h1>
+    <p>{{ event.location }}</p>
+    <p>{{ event.event_date }}</p>
+    <p>{{ event.description }}</p>
+</section>
+{% endblock %}
