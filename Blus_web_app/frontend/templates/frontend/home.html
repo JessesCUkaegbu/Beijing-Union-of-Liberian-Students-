@@ -1,22 +1,22 @@
 {% extends "base.html" %}
-{% block title %} StudentHub — Home {% endblock %}
-{% block nav_home %} active {% endblock %}
+{% block title %}BLUS — Beijing Union of Liberian Students{% endblock %}
+{% block nav_home %}active{% endblock %}
 
 {% block content %}
 
-<!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
+<!-- ══════════════════════ HERO ══════════════════════ -->
 <section class="relative overflow-hidden bg-brand-blue min-h-[92vh] flex items-center">
-  <!-- Background grid pattern -->
-  <div class="absolute inset-0 opacity-[0.04]"
-    style="background-image: linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:60px 60px;">
+
+  <div class="absolute inset-0 opacity-[0.035]"
+       style="background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:60px 60px;animation:grid-drift 20s linear infinite;">
   </div>
-  <!-- Red accent blob -->
-  <div class="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-brand-red opacity-10 blur-3xl pointer-events-none"></div>
-  <div class="absolute bottom-0 left-1/3 w-[300px] h-[300px] rounded-full bg-brand-blue-md opacity-20 blur-3xl pointer-events-none"></div>
+  <div class="blob-a absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-brand-red blur-3xl pointer-events-none"></div>
+  <div class="blob-b absolute bottom-10 left-1/4  w-[320px] h-[320px] rounded-full bg-brand-blue-md blur-3xl pointer-events-none" style="opacity:.18;"></div>
 
   <div class="relative max-w-7xl mx-auto px-6 py-24 grid md:grid-cols-2 gap-16 items-center">
+
     <div>
-      <span class="section-tag fade-up" style="background:rgba(255,255,255,0.08);color:#fff;">
+      <span class="section-tag fade-up" style="background:rgba(255,255,255,.08);color:#fff;">
         Student Community Platform
       </span>
 
@@ -27,7 +27,7 @@
       </h1>
 
       <p class="text-white/60 text-lg leading-relaxed mt-6 max-w-md fade-up delay-2">
-        A unified platform for managing student life — events, finances, support, and community, all in one place.
+        A unified platform for managing Liberian student life in Beijing — events, finances, support, and community, all in one place.
       </p>
 
       <div class="flex flex-wrap gap-3 mt-8 fade-up delay-3">
@@ -35,40 +35,47 @@
           Discover More
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-        <a href="/contact/" class="btn-outline" style="border-color:rgba(255,255,255,0.3);color:#fff;">
+        <a href="/contact/" class="btn-outline" style="border-color:rgba(255,255,255,.3);color:#fff;">
           Get in Touch
         </a>
       </div>
 
-      <!-- Quick stats -->
+      <!-- Animated stats -->
       <div class="flex gap-8 mt-12 fade-up delay-4">
         <div>
-          <p class="font-display text-3xl font-bold text-white">500<span class="text-brand-red">+</span></p>
+          <p class="font-display text-3xl font-bold text-white">
+            <span class="stat-count" data-target="500">0</span><span class="text-brand-red">+</span>
+          </p>
           <p class="text-white/50 text-xs mt-1 uppercase tracking-widest">Students</p>
         </div>
         <div class="w-px bg-white/10"></div>
         <div>
-          <p class="font-display text-3xl font-bold text-white">80<span class="text-brand-red">+</span></p>
+          <p class="font-display text-3xl font-bold text-white">
+            <span class="stat-count" data-target="80">0</span><span class="text-brand-red">+</span>
+          </p>
           <p class="text-white/50 text-xs mt-1 uppercase tracking-widest">Events/Year</p>
         </div>
         <div class="w-px bg-white/10"></div>
         <div>
-          <p class="font-display text-3xl font-bold text-white">12<span class="text-brand-red">+</span></p>
+          <p class="font-display text-3xl font-bold text-white">
+            <span class="stat-count" data-target="12">0</span><span class="text-brand-red">+</span>
+          </p>
           <p class="text-white/50 text-xs mt-1 uppercase tracking-widest">Universities</p>
         </div>
       </div>
     </div>
 
-    <!-- Hero card stack -->
+    <!-- Floating card -->
     <div class="relative hidden md:flex justify-center items-center fade-up delay-2">
-      <div class="relative w-full max-w-sm">
-        <!-- Back card -->
+      <div class="hero-card-float relative w-full max-w-sm">
         <div class="absolute top-4 left-4 w-full h-full rounded-2xl bg-white/5 border border-white/10"></div>
-        <!-- Front card -->
         <div class="relative bg-white rounded-2xl shadow-2xl p-6 z-10">
           <div class="flex items-center justify-between mb-4">
             <span class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Upcoming Event</span>
-            <span class="text-xs bg-brand-red-lt text-brand-red font-semibold px-2.5 py-0.5 rounded-full">Live</span>
+            <span class="text-xs bg-brand-red-lt text-brand-red font-semibold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand-red inline-block" style="animation:live-pulse 1.2s ease-in-out infinite;"></span>
+              Live
+            </span>
           </div>
           <h3 class="font-display font-bold text-xl text-gray-900 mb-1">Annual Cultural Gala</h3>
           <p class="text-sm text-gray-500 mb-4">Join us for an evening of culture, food, and community.</p>
@@ -82,84 +89,75 @@
               7:00 PM
             </span>
           </div>
-          <a href="/events/" class="btn-red w-full justify-center mt-5 text-sm">View Events</a>
+          <a href="/contact/" class="btn-red w-full justify-center mt-5 text-sm">Get Involved</a>
         </div>
-        <!-- Floating badge -->
-        <div class="absolute -top-5 -right-5 bg-brand-red text-white text-xs font-bold px-3 py-2 rounded-xl shadow-lg z-20">
+        <div class="badge-float absolute -top-5 -right-5 bg-brand-red text-white text-xs font-bold px-3 py-2 rounded-xl shadow-lg z-20">
           🎉 New Posts
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Wave divider -->
   <div class="absolute bottom-0 left-0 right-0">
-    <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M0 60L1440 60L1440 20C1200 50 960 0 720 20C480 40 240 10 0 30Z" fill="white"/>
-    </svg>
+    <svg viewBox="0 0 1440 60" fill="none" preserveAspectRatio="none"><path d="M0 60L1440 60L1440 20C1200 50 960 0 720 20C480 40 240 10 0 30Z" fill="white"/></svg>
   </div>
 </section>
 
-<!-- ═══════════════════════════════ FEATURES ═══════════════════════════ -->
+<!-- ══════════════════════ FEATURES ══════════════════════ -->
 <section class="py-24 bg-white">
   <div class="max-w-7xl mx-auto px-6">
-    <div class="text-center mb-16">
+    <div class="text-center mb-16" data-aos="fade-up">
       <span class="section-tag">What We Offer</span>
       <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-900 mt-4 leading-tight">
         Everything your student<br/>community needs
       </h2>
       <p class="text-gray-500 mt-4 max-w-xl mx-auto">
-        From managing dues to organising events, StudentHub keeps your association running smoothly.
+        From managing dues to organising events, BLUS keeps your association running smoothly.
       </p>
     </div>
 
     <div class="grid md:grid-cols-3 gap-6">
-      {% for feature in features %}
-      <!-- Repeated for each feature via Django context -->
-      {% endfor %}
-
-      <!-- Static preview cards -->
-      <div class="group p-8 rounded-2xl border border-gray-100 hover:border-brand-red/30 hover:shadow-xl transition-all duration-300">
-        <div class="w-12 h-12 rounded-xl bg-brand-red-lt flex items-center justify-center mb-5 group-hover:bg-brand-red transition-colors">
+      <div class="feature-card group p-8 rounded-2xl border border-gray-100" data-aos="fade-up" data-aos-delay="0">
+        <div class="w-12 h-12 rounded-xl bg-brand-red-lt flex items-center justify-center mb-5 group-hover:bg-brand-red transition-colors duration-300">
           <svg class="text-brand-red group-hover:text-white transition-colors" width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2C6.03 2 2 6.03 2 11s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 4a3 3 0 110 6 3 3 0 010-6zm0 14c-2.67 0-5-.67-6.67-1.73C5.67 16.1 8.17 15 11 15s5.33 1.1 6.67 2.27C16 18.33 13.67 19 11 19z" fill="currentColor"/></svg>
         </div>
         <h3 class="font-display font-bold text-lg text-gray-900 mb-2">Student Management</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">Full profiles, roles, status tracking, and passport/university info in one clean dashboard.</p>
+        <p class="text-gray-500 text-sm leading-relaxed">Full profiles, roles, status tracking, and university info in one clean dashboard.</p>
       </div>
 
-      <div class="group p-8 rounded-2xl border border-gray-100 hover:border-brand-red/30 hover:shadow-xl transition-all duration-300">
-        <div class="w-12 h-12 rounded-xl bg-brand-red-lt flex items-center justify-center mb-5 group-hover:bg-brand-red transition-colors">
+      <div class="feature-card group p-8 rounded-2xl border border-gray-100" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-12 h-12 rounded-xl bg-brand-red-lt flex items-center justify-center mb-5 group-hover:bg-brand-red transition-colors duration-300">
           <svg class="text-brand-red group-hover:text-white transition-colors" width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="3" y="4" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 8h16M8 4v4M14 4v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         </div>
-        <h3 class="font-display font-bold text-lg text-gray-900 mb-2">Events & Activities</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">Plan, publish, and track events with location, attendance, and budget — all linked to your finance records.</p>
+        <h3 class="font-display font-bold text-lg text-gray-900 mb-2">Events &amp; Activities</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Plan, publish, and track events with location, attendance, and budget all in one place.</p>
       </div>
 
-      <div class="group p-8 rounded-2xl border border-gray-100 hover:border-brand-red/30 hover:shadow-xl transition-all duration-300">
-        <div class="w-12 h-12 rounded-xl bg-brand-red-lt flex items-center justify-center mb-5 group-hover:bg-brand-red transition-colors">
-          <svg class="text-brand-red group-hover:text-white transition-colors" width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3v4M11 15v4M3 11h4M15 11h4M5.64 5.64l2.83 2.83M13.54 13.54l2.83 2.83M5.64 16.36l2.83-2.83M13.54 8.46l2.83-2.83" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <div class="feature-card group p-8 rounded-2xl border border-gray-100" data-aos="fade-up" data-aos-delay="200">
+        <div class="w-12 h-12 rounded-xl bg-brand-red-lt flex items-center justify-center mb-5 group-hover:bg-brand-red transition-colors duration-300">
+          <svg class="text-brand-red group-hover:text-white transition-colors" width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="5" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M2 9h18M7 9v9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         </div>
-        <h3 class="font-display font-bold text-lg text-gray-900 mb-2">Finance & Dues</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">Track donations, student loans, dues payments, and event spending with a clear financial overview.</p>
+        <h3 class="font-display font-bold text-lg text-gray-900 mb-2">Finance &amp; Dues</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Track donations, student loans, dues payments, and event spending with a clear overview.</p>
       </div>
 
-      <div class="group p-8 rounded-2xl border border-gray-100 hover:border-brand-red/30 hover:shadow-xl transition-all duration-300">
-        <div class="w-12 h-12 rounded-xl bg-brand-red-lt flex items-center justify-center mb-5 group-hover:bg-brand-red transition-colors">
+      <div class="feature-card group p-8 rounded-2xl border border-gray-100" data-aos="fade-up" data-aos-delay="0">
+        <div class="w-12 h-12 rounded-xl bg-brand-red-lt flex items-center justify-center mb-5 group-hover:bg-brand-red transition-colors duration-300">
           <svg class="text-brand-red group-hover:text-white transition-colors" width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 6h14M4 10h10M4 14h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         </div>
-        <h3 class="font-display font-bold text-lg text-gray-900 mb-2">Blog & News</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">Share stories, announcements, and updates with the community through a clean, readable blog.</p>
+        <h3 class="font-display font-bold text-lg text-gray-900 mb-2">Blog &amp; News</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Share stories, announcements, and updates with the community through a clean blog.</p>
       </div>
 
-      <div class="group p-8 rounded-2xl border border-gray-100 hover:border-brand-red/30 hover:shadow-xl transition-all duration-300">
-        <div class="w-12 h-12 rounded-xl bg-brand-red-lt flex items-center justify-center mb-5 group-hover:bg-brand-red transition-colors">
+      <div class="feature-card group p-8 rounded-2xl border border-gray-100" data-aos="fade-up" data-aos-delay="100">
+        <div class="w-12 h-12 rounded-xl bg-brand-red-lt flex items-center justify-center mb-5 group-hover:bg-brand-red transition-colors duration-300">
           <svg class="text-brand-red group-hover:text-white transition-colors" width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M2 20l2-6a9 9 0 1 1 4 4z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <h3 class="font-display font-bold text-lg text-gray-900 mb-2">Support System</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">Students can submit support requests and track responses — keeping admin communication transparent.</p>
+        <p class="text-gray-500 text-sm leading-relaxed">Students can submit support requests and track responses — keeping communication transparent.</p>
       </div>
 
-      <div class="group p-8 rounded-2xl bg-brand-blue border border-brand-blue hover:bg-brand-blue-md transition-all duration-300 flex flex-col justify-between">
+      <div class="feature-card group p-8 rounded-2xl bg-brand-blue border border-brand-blue hover:bg-brand-blue-md transition-all duration-300 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="200">
         <div>
           <p class="font-display font-bold text-2xl text-white leading-snug mb-4">Ready to join the community?</p>
           <p class="text-white/60 text-sm">Get in touch and we'll get you set up.</p>
@@ -170,10 +168,10 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════ LEADERSHIP PREVIEW ════════════════ -->
+<!-- ══════════════════════ LEADERSHIP PREVIEW ══════════════════════ -->
 <section class="py-24 bg-gray-50">
   <div class="max-w-7xl mx-auto px-6">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4" data-aos="fade-up">
       <div>
         <span class="section-tag">Our People</span>
         <h2 class="font-display text-4xl font-bold text-gray-900 mt-4">Meet the leadership</h2>
@@ -182,100 +180,134 @@
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {% for admin in admins|slice:":4" %}
-      <div class="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-gray-200 cursor-pointer">
-        {% if admin.student.img %}
-        <img src="{{ admin.student.img.url }}" alt="{{ admin.student.first_name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-        {% else %}
-        <div class="w-full h-full bg-gradient-to-br from-brand-blue to-brand-blue-md flex items-center justify-center">
-          <span class="font-display text-4xl font-bold text-white opacity-30">{{ admin.student.first_name|first }}</span>
+      <!-- Card 1 -->
+      <div class="leader-card group relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-brand-blue to-brand-blue-md cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
+           data-aos="zoom-in" data-aos-delay="0">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+        <div class="slide-info absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent pt-10">
+          <p class="font-display font-bold text-white text-base">James Kollie</p>
+          <p class="text-white/60 text-xs mt-0.5">President</p>
         </div>
-        {% endif %}
-        <div class="absolute inset-0 bg-gradient-to-t from-brand-blue/90 via-transparent to-transparent"></div>
-        <div class="absolute bottom-0 left-0 right-0 p-4">
-          <p class="font-display font-bold text-white text-base">{{ admin.student.first_name }} {{ admin.student.last_name }}</p>
-          <p class="text-white/70 text-xs mt-0.5">{{ admin.position }}</p>
-        </div>
-        <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-brand-red flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+        <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-brand-red flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
       </div>
-      {% empty %}
-      <!-- Placeholder cards when no data -->
-      {% for i in "1234" %}
-      <div class="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-brand-blue to-brand-blue-md">
-        <div class="absolute inset-0 bg-gradient-to-t from-brand-blue/90 via-transparent to-transparent"></div>
-        <div class="absolute bottom-0 left-0 right-0 p-4">
-          <div class="h-4 bg-white/20 rounded w-3/4 mb-1"></div>
-          <div class="h-3 bg-white/10 rounded w-1/2"></div>
+      <!-- Card 2 -->
+      <div class="leader-card group relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-[#1e3a8a] to-brand-blue-md cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
+           data-aos="zoom-in" data-aos-delay="80">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+        <div class="slide-info absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent pt-10">
+          <p class="font-display font-bold text-white text-base">Mary Sumo</p>
+          <p class="text-white/60 text-xs mt-0.5">Vice President</p>
+        </div>
+        <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-brand-red flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
       </div>
-      {% endfor %}
-      {% endfor %}
+      <!-- Card 3 -->
+      <div class="leader-card group relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-brand-blue to-[#1e40af] cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
+           data-aos="zoom-in" data-aos-delay="160">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+        <div class="slide-info absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent pt-10">
+          <p class="font-display font-bold text-white text-base">Anthony Freeman</p>
+          <p class="text-white/60 text-xs mt-0.5">Secretary-General</p>
+        </div>
+        <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-brand-red flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="leader-card group relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-[#1e2f6b] to-brand-blue cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
+           data-aos="zoom-in" data-aos-delay="240">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+        <div class="slide-info absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent pt-10">
+          <p class="font-display font-bold text-white text-base">Rebecca Toe</p>
+          <p class="text-white/60 text-xs mt-0.5">Treasurer</p>
+        </div>
+        <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-brand-red flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════ BLOG PREVIEW ══════════════════════ -->
+<!-- ══════════════════════ BLOG PREVIEW ══════════════════════ -->
 <section class="py-24 bg-white">
   <div class="max-w-7xl mx-auto px-6">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4" data-aos="fade-up">
       <div>
         <span class="section-tag">Latest Stories</span>
         <h2 class="font-display text-4xl font-bold text-gray-900 mt-4">From the blog</h2>
       </div>
-      <a href="/blog/" class="btn-outline self-start md:self-auto">All Posts →</a>
+      <a href="/news/" class="btn-outline self-start md:self-auto">All Posts →</a>
     </div>
 
     <div class="grid md:grid-cols-3 gap-6">
-      {% for post in recent_posts|slice:":3" %}
-      <article class="group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300">
-        {% if post.img %}
-        <div class="aspect-video overflow-hidden">
-          <img src="{{ post.img.url }}" alt="{{ post.title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-        </div>
-        {% else %}
-        <div class="aspect-video bg-gradient-to-br from-brand-blue-lt to-brand-red-lt flex items-center justify-center">
+      <!-- Post 1 -->
+      <article class="blog-card group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300"
+               data-aos="fade-up" data-aos-delay="0">
+        <div class="aspect-video overflow-hidden bg-gradient-to-br from-brand-blue-lt to-brand-red-lt flex items-center justify-center">
           <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M8 12h24M8 18h16M8 24h20" stroke="#1A2B6B" stroke-opacity="0.2" stroke-width="2.5" stroke-linecap="round"/></svg>
         </div>
-        {% endif %}
         <div class="p-6">
-          <p class="text-xs text-brand-red font-semibold uppercase tracking-widest mb-2">{{ post.created_at|date:"M d, Y" }}</p>
-          <h3 class="font-display font-bold text-lg text-gray-900 leading-snug mb-2 group-hover:text-brand-red transition-colors">{{ post.title }}</h3>
-          <p class="text-gray-500 text-sm line-clamp-2">{{ post.content|truncatewords:20 }}</p>
+          <p class="text-xs text-brand-red font-semibold uppercase tracking-widest mb-2">Apr 20, 2025</p>
+          <h3 class="font-display font-bold text-lg text-gray-900 leading-snug mb-2 group-hover:text-brand-red transition-colors">Annual Cultural Night 2025: A Night to Remember</h3>
+          <p class="text-gray-500 text-sm line-clamp-2">An extraordinary evening of Liberian culture, music, and community spirit came alive at the BLUS annual gala.</p>
           <div class="flex items-center justify-between mt-4">
-            <span class="text-xs text-gray-400">By {{ post.author.student.first_name }}</span>
-            <a href="/blog/{{ post.id }}/" class="text-brand-red text-xs font-semibold hover:underline">Read more →</a>
+            <span class="text-xs text-gray-400">By James Kollie</span>
+            <a href="/news/" class="text-brand-red text-xs font-semibold hover:underline">Read more →</a>
           </div>
         </div>
       </article>
-      {% empty %}
-      {% for i in "123" %}
-      <article class="rounded-2xl overflow-hidden border border-gray-100">
-        <div class="aspect-video bg-gradient-to-br from-brand-blue-lt to-brand-red-lt"></div>
+
+      <!-- Post 2 -->
+      <article class="blog-card group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300"
+               data-aos="fade-up" data-aos-delay="100">
+        <div class="aspect-video overflow-hidden bg-gradient-to-br from-brand-red-lt to-brand-blue-lt flex items-center justify-center">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M8 12h24M8 18h16M8 24h20" stroke="#E02B20" stroke-opacity="0.2" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
         <div class="p-6">
-          <div class="h-3 bg-gray-100 rounded w-1/3 mb-3"></div>
-          <div class="h-5 bg-gray-100 rounded w-3/4 mb-2"></div>
-          <div class="h-3 bg-gray-100 rounded w-full mb-1"></div>
-          <div class="h-3 bg-gray-100 rounded w-2/3"></div>
+          <p class="text-xs text-brand-red font-semibold uppercase tracking-widest mb-2">Mar 15, 2025</p>
+          <h3 class="font-display font-bold text-lg text-gray-900 leading-snug mb-2 group-hover:text-brand-red transition-colors">Student Welfare Fund: How to Apply Before June</h3>
+          <p class="text-gray-500 text-sm line-clamp-2">BLUS has opened applications for the student welfare fund. Here's everything you need to know to apply.</p>
+          <div class="flex items-center justify-between mt-4">
+            <span class="text-xs text-gray-400">By Mary Sumo</span>
+            <a href="/news/" class="text-brand-red text-xs font-semibold hover:underline">Read more →</a>
+          </div>
         </div>
       </article>
-      {% endfor %}
-      {% endfor %}
+
+      <!-- Post 3 -->
+      <article class="blog-card group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300"
+               data-aos="fade-up" data-aos-delay="200">
+        <div class="aspect-video overflow-hidden bg-gradient-to-br from-brand-blue-lt to-brand-red-lt flex items-center justify-center">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M8 12h24M8 18h16M8 24h20" stroke="#1A2B6B" stroke-opacity="0.2" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="p-6">
+          <p class="text-xs text-brand-red font-semibold uppercase tracking-widest mb-2">Feb 8, 2025</p>
+          <h3 class="font-display font-bold text-lg text-gray-900 leading-snug mb-2 group-hover:text-brand-red transition-colors">New Executive Board Announced for 2025-26</h3>
+          <p class="text-gray-500 text-sm line-clamp-2">The BLUS general assembly has elected a new executive board to lead the association into the new academic year.</p>
+          <div class="flex items-center justify-between mt-4">
+            <span class="text-xs text-gray-400">By Anthony Freeman</span>
+            <a href="/news/" class="text-brand-red text-xs font-semibold hover:underline">Read more →</a>
+          </div>
+        </div>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════════ CTA BANNER ═══════════════════════ -->
-<section class="py-20 bg-brand-red">
-  <div class="max-w-4xl mx-auto px-6 text-center">
+<!-- ══════════════════════ CTA ══════════════════════ -->
+<section class="cta-shimmer py-20 bg-brand-red">
+  <div class="max-w-4xl mx-auto px-6 text-center" data-aos="zoom-in">
     <h2 class="font-display text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
       Ready to be part of something bigger?
     </h2>
     <p class="text-white/70 text-lg mb-8 max-w-xl mx-auto">
       Connect with hundreds of students, access resources, and make your university life extraordinary.
     </p>
-    <div class="flex flex-wrap gap-3 justify-center">
+    <div class="flex flex-wrap gap-3 justify-center" data-aos="fade-up" data-aos-delay="150">
       <a href="/contact/" class="inline-flex items-center gap-2 bg-white text-brand-red font-bold px-6 py-3 rounded-full hover:bg-gray-100 transition-colors text-sm">
         Join Today →
       </a>
@@ -285,5 +317,27 @@
     </div>
   </div>
 </section>
+
+<script>
+  (function () {
+    const counters = document.querySelectorAll('.stat-count');
+    if (!counters.length) return;
+    function animateCounter(el) {
+      const target = +el.dataset.target;
+      const duration = 1400, step = 16;
+      const increment = target / (duration / step);
+      let current = 0;
+      const tick = setInterval(() => {
+        current += increment;
+        if (current >= target) { el.textContent = target; clearInterval(tick); }
+        else el.textContent = Math.floor(current);
+      }, step);
+    }
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { animateCounter(e.target); obs.unobserve(e.target); } });
+    }, { threshold: 0.5 });
+    counters.forEach(c => obs.observe(c));
+  })();
+</script>
 
 {% endblock %}

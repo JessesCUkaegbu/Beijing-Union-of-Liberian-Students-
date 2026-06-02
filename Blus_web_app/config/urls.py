@@ -4,14 +4,19 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 
+from apps.students.views import DashboardView
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("admin_dashboard/", DashboardView.as_view(), name="admin_dashboard"),
+    path("frontend/admin_dashboard/", DashboardView.as_view(), name="frontend_admin_dashboard"),
     path("accounts/", include("apps.accounts.urls")),
-    path("students/", include("apps.students.urls")),
+    path("students/", include(("apps.students.urls", "students"), namespace="students")),
     path("events/", include("apps.events.urls")),
     path("finance/", include("apps.finance.urls")),
     path("blog/", include("apps.blog.urls")),
+    
     path("", TemplateView.as_view(template_name="frontend/home.html"), name="home"),
     path("about/", TemplateView.as_view(template_name="frontend/about.html"), name="about"),
     path("contact/", TemplateView.as_view(template_name="frontend/contact.html"), name="contact"),

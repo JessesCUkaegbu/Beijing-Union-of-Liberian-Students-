@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %} About Us — StudentHub {% endblock %}
+{% block title %}About Us — BLUS{% endblock %}
 {% block nav_about %}active{% endblock %}
 
 {% block content %}
@@ -7,63 +7,65 @@
 <!-- ══════════ HERO ══════════ -->
 <section class="relative bg-brand-blue overflow-hidden">
   <div class="absolute inset-0 opacity-[0.04]"
-    style="background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:60px 60px;">
-  </div>
-  <div class="absolute -top-20 right-0 w-[400px] h-[400px] rounded-full bg-brand-red opacity-10 blur-3xl pointer-events-none"></div>
+       style="background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:60px 60px;"></div>
+  <div class="blob-about absolute -top-20 right-0 w-[400px] h-[400px] rounded-full bg-brand-red blur-3xl pointer-events-none"></div>
   <div class="absolute -bottom-1 left-0 right-0">
-    <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M0 60L1440 60L1440 20C1200 50 960 0 720 20C480 40 240 10 0 30Z" fill="white"/>
-    </svg>
+    <svg viewBox="0 0 1440 60" fill="none" preserveAspectRatio="none"><path d="M0 60L1440 60L1440 20C1200 50 960 0 720 20C480 40 240 10 0 30Z" fill="white"/></svg>
   </div>
   <div class="relative max-w-7xl mx-auto px-6 pt-20 pb-28">
-    <nav class="flex items-center gap-2 text-xs text-white/40 mb-6">
+    <nav class="flex items-center gap-2 text-xs text-white/40 mb-6 fade-up">
       <a href="/" class="hover:text-white/70 transition-colors">Home</a>
       <span>›</span>
       <span class="text-white/70">About</span>
     </nav>
     <div class="max-w-3xl">
-      <h1 class="font-display text-5xl md:text-6xl font-extrabold text-white leading-[1.05] mb-5">
+      <h1 class="font-display text-5xl md:text-6xl font-extrabold text-white leading-[1.05] mb-5 fade-up delay-1">
         Who We <span class="text-brand-red">Are</span>
       </h1>
-      <p class="text-white/60 text-lg leading-relaxed">
-        StudentHub is a community-driven platform built to support international and local students — helping them navigate university life, stay connected, and access the resources they need.
+      <p class="text-white/60 text-lg leading-relaxed fade-up delay-2">
+        BLUS is a community-driven platform built to support Liberian students in Beijing — helping them navigate university life, stay connected, and access the resources they need.
       </p>
     </div>
   </div>
 </section>
 
-<!-- ══════════ MISSION + VISION ══════════ -->
+<!-- ══════════ MISSION + STATS ══════════ -->
 <section class="py-24 bg-white">
   <div class="max-w-7xl mx-auto px-6">
     <div class="grid md:grid-cols-2 gap-12 items-center">
-      <div>
+
+      <div data-aos="fade-right">
         <span class="section-tag">Our Purpose</span>
         <h2 class="font-display text-4xl font-bold text-gray-900 mt-5 leading-tight mb-5">
           Built by students,<br/>for students
         </h2>
         <p class="text-gray-500 leading-relaxed mb-4">
-          We started as a small association with one goal: make student life less overwhelming. Today, StudentHub connects hundreds of students across multiple universities, offering tools for community, finance, and support.
+          We started as a small association with one goal: make student life less overwhelming. Today, BLUS connects hundreds of Liberian students across universities in Beijing, offering tools for community, finance, and support.
         </p>
         <p class="text-gray-500 leading-relaxed">
           Whether you're new to the country or a long-time member, we're here to make sure no student feels alone.
         </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/contact/" class="btn-red">Get Involved →</a>
+          <a href="/leadership/" class="btn-outline">Meet the Team →</a>
+        </div>
       </div>
 
-      <!-- Stats block -->
-      <div class="grid grid-cols-2 gap-5">
-        <div class="bg-brand-blue rounded-2xl p-8 text-center">
+      <!-- Stats grid -->
+      <div class="grid grid-cols-2 gap-5" data-aos="fade-left" data-aos-delay="100">
+        <div class="bg-brand-blue rounded-2xl p-8 text-center" data-aos="zoom-in" data-aos-delay="0">
           <p class="font-display text-5xl font-extrabold text-white">500<span class="text-brand-red">+</span></p>
           <p class="text-white/50 text-sm mt-2 uppercase tracking-widest">Active Students</p>
         </div>
-        <div class="bg-brand-red-lt rounded-2xl p-8 text-center border border-brand-red/10">
+        <div class="bg-brand-red-lt rounded-2xl p-8 text-center border border-brand-red/10" data-aos="zoom-in" data-aos-delay="80">
           <p class="font-display text-5xl font-extrabold text-brand-blue">12<span class="text-brand-red">+</span></p>
           <p class="text-gray-400 text-sm mt-2 uppercase tracking-widest">Universities</p>
         </div>
-        <div class="bg-brand-red-lt rounded-2xl p-8 text-center border border-brand-red/10">
+        <div class="bg-brand-red-lt rounded-2xl p-8 text-center border border-brand-red/10" data-aos="zoom-in" data-aos-delay="160">
           <p class="font-display text-5xl font-extrabold text-brand-blue">80<span class="text-brand-red">+</span></p>
           <p class="text-gray-400 text-sm mt-2 uppercase tracking-widest">Events/Year</p>
         </div>
-        <div class="bg-brand-blue rounded-2xl p-8 text-center">
+        <div class="bg-brand-blue rounded-2xl p-8 text-center" data-aos="zoom-in" data-aos-delay="240">
           <p class="font-display text-5xl font-extrabold text-white">98<span class="text-brand-red">%</span></p>
           <p class="text-white/50 text-sm mt-2 uppercase tracking-widest">Satisfaction</p>
         </div>
@@ -75,26 +77,31 @@
 <!-- ══════════ VALUES ══════════ -->
 <section class="py-24 bg-gray-50">
   <div class="max-w-7xl mx-auto px-6">
-    <div class="text-center mb-14">
+    <div class="text-center mb-14" data-aos="fade-up">
       <span class="section-tag">What Drives Us</span>
       <h2 class="font-display text-4xl font-bold text-gray-900 mt-4">Our core values</h2>
     </div>
     <div class="grid md:grid-cols-3 gap-6">
-      <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+      <div class="group bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+           data-aos="fade-up" data-aos-delay="0">
         <div class="w-10 h-10 rounded-xl bg-brand-red flex items-center justify-center mb-5">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2l2.09 4.26L16 7.27l-3.5 3.41.83 4.82L9 13.27l-4.33 2.23.83-4.82L2 7.27l4.91-.71L9 2z" fill="white"/></svg>
         </div>
         <h3 class="font-display font-bold text-lg text-gray-900 mb-2">Excellence</h3>
         <p class="text-gray-500 text-sm leading-relaxed">We hold ourselves to high standards in everything — from the events we run to the support we provide.</p>
       </div>
-      <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+
+      <div class="group bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+           data-aos="fade-up" data-aos-delay="100">
         <div class="w-10 h-10 rounded-xl bg-brand-blue flex items-center justify-center mb-5">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C5.13 2 2 5.13 2 9s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7zm0 3a2.5 2.5 0 110 5 2.5 2.5 0 010-5zm0 10c-2.22 0-4.19-.92-5.6-2.39C4.32 11.5 6.54 10.5 9 10.5s4.68 1 5.6 2.11C13.19 14.08 11.22 15 9 15z" fill="white"/></svg>
         </div>
         <h3 class="font-display font-bold text-lg text-gray-900 mb-2">Community</h3>
         <p class="text-gray-500 text-sm leading-relaxed">We believe students thrive when they feel connected. Every decision we make puts community first.</p>
       </div>
-      <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+
+      <div class="group bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+           data-aos="fade-up" data-aos-delay="200">
         <div class="w-10 h-10 rounded-xl bg-brand-red flex items-center justify-center mb-5">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2v4M9 12v4M2 9h4M12 9h4M4.22 4.22l2.83 2.83M10.95 10.95l2.83 2.83M4.22 13.78l2.83-2.83M10.95 7.05l2.83-2.83" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
@@ -108,78 +115,101 @@
 <!-- ══════════ TIMELINE ══════════ -->
 <section class="py-24 bg-white">
   <div class="max-w-4xl mx-auto px-6">
-    <div class="text-center mb-14">
+    <div class="text-center mb-14" data-aos="fade-up">
       <span class="section-tag">Our Story</span>
       <h2 class="font-display text-4xl font-bold text-gray-900 mt-4">How we got here</h2>
     </div>
 
     <div class="relative">
-      <!-- Vertical line -->
-      <div class="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gray-200"></div>
+      <!-- Animated vertical line -->
+      <div class="absolute left-1/2 -translate-x-1/2 top-0 w-px bg-gray-200 tl-line" data-aos="tl-line" style="height:0;transition:height 1.4s ease .2s;" id="tl-line"></div>
 
-      <div class="space-y-12">
-        {% for item in timeline %}
+      <div class="space-y-14">
+
+        <!-- 2019 — left -->
         <div class="relative grid grid-cols-2 gap-8 items-center">
-          <div class="text-right pr-8">
-            {% if forloop.counter|divisibleby:2 %}
-            {% else %}
-            <span class="font-display font-bold text-3xl text-brand-red">{{ item.year }}</span>
-            <h3 class="font-display font-semibold text-lg text-gray-900 mt-1">{{ item.title }}</h3>
-            <p class="text-gray-500 text-sm mt-1">{{ item.description }}</p>
-            {% endif %}
-          </div>
-          <!-- Dot -->
-          <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-brand-red border-4 border-white shadow-sm"></div>
-          <div class="pl-8">
-            {% if forloop.counter|divisibleby:2 %}
-            <span class="font-display font-bold text-3xl text-brand-red">{{ item.year }}</span>
-            <h3 class="font-display font-semibold text-lg text-gray-900 mt-1">{{ item.title }}</h3>
-            <p class="text-gray-500 text-sm mt-1">{{ item.description }}</p>
-            {% endif %}
-          </div>
-        </div>
-        {% empty %}
-        <!-- Static fallback -->
-        <div class="relative grid grid-cols-2 gap-8 items-center">
-          <div class="text-right pr-8">
+          <div class="text-right pr-10" data-aos="fade-right">
             <span class="font-display font-bold text-3xl text-brand-red">2019</span>
             <h3 class="font-display font-semibold text-lg text-gray-900 mt-1">Founded</h3>
-            <p class="text-gray-500 text-sm mt-1">A small group of students created the first association chapter.</p>
+            <p class="text-gray-500 text-sm mt-1">A small group of Liberian students in Beijing created the first BLUS chapter.</p>
           </div>
-          <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-brand-red border-4 border-white shadow-sm"></div>
-          <div class="pl-8"></div>
+          <div class="absolute left-1/2 -translate-x-1/2 z-10">
+            <div class="tl-dot w-4 h-4 rounded-full bg-brand-red border-4 border-white shadow-sm"></div>
+          </div>
+          <div class="pl-10"></div>
         </div>
+
+        <!-- 2021 — right -->
         <div class="relative grid grid-cols-2 gap-8 items-center">
-          <div class="text-right pr-8"></div>
-          <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-brand-red border-4 border-white shadow-sm"></div>
-          <div class="pl-8">
+          <div class="pr-10"></div>
+          <div class="absolute left-1/2 -translate-x-1/2 z-10">
+            <div class="tl-dot w-4 h-4 rounded-full bg-brand-red border-4 border-white shadow-sm"></div>
+          </div>
+          <div class="pl-10" data-aos="fade-left">
             <span class="font-display font-bold text-3xl text-brand-red">2021</span>
             <h3 class="font-display font-semibold text-lg text-gray-900 mt-1">100 Members</h3>
             <p class="text-gray-500 text-sm mt-1">Grew to cover 5 universities and launched the events programme.</p>
           </div>
         </div>
+
+        <!-- 2023 — left -->
         <div class="relative grid grid-cols-2 gap-8 items-center">
-          <div class="text-right pr-8">
+          <div class="text-right pr-10" data-aos="fade-right">
             <span class="font-display font-bold text-3xl text-brand-red">2023</span>
-            <h3 class="font-display font-semibold text-lg text-gray-900 mt-1">StudentHub Launched</h3>
-            <p class="text-gray-500 text-sm mt-1">Built this platform to manage everything in one place.</p>
+            <h3 class="font-display font-semibold text-lg text-gray-900 mt-1">BLUS Platform Launched</h3>
+            <p class="text-gray-500 text-sm mt-1">Built this platform to manage students, events, finance, and news in one place.</p>
           </div>
-          <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-brand-red border-4 border-white shadow-sm"></div>
-          <div class="pl-8"></div>
+          <div class="absolute left-1/2 -translate-x-1/2 z-10">
+            <div class="tl-dot w-4 h-4 rounded-full bg-brand-red border-4 border-white shadow-sm"></div>
+          </div>
+          <div class="pl-10"></div>
         </div>
+
+        <!-- 2025 — right -->
         <div class="relative grid grid-cols-2 gap-8 items-center">
-          <div class="text-right pr-8"></div>
-          <div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-brand-red border-4 border-white shadow-sm"></div>
-          <div class="pl-8">
+          <div class="pr-10"></div>
+          <div class="absolute left-1/2 -translate-x-1/2 z-10">
+            <div class="tl-dot w-5 h-5 rounded-full bg-brand-red border-4 border-white shadow-md ring-4 ring-brand-red/20"></div>
+          </div>
+          <div class="pl-10" data-aos="fade-left">
             <span class="font-display font-bold text-3xl text-brand-red">2025</span>
             <h3 class="font-display font-semibold text-lg text-gray-900 mt-1">500+ Students</h3>
-            <p class="text-gray-500 text-sm mt-1">Now the largest student association platform in the region.</p>
+            <p class="text-gray-500 text-sm mt-1">Now the largest Liberian student association platform in the region.</p>
           </div>
         </div>
-        {% endempty %}
+
       </div>
     </div>
   </div>
 </section>
+
+<!-- ══════════ CTA ══════════ -->
+<section class="py-20 bg-brand-blue">
+  <div class="max-w-4xl mx-auto px-6 text-center" data-aos="zoom-in">
+    <h2 class="font-display text-4xl font-bold text-white leading-tight mb-4">
+      Want to be part of our story?
+    </h2>
+    <p class="text-white/60 text-lg mb-8 max-w-lg mx-auto">
+      Join hundreds of students who are already connected, supported, and thriving with BLUS.
+    </p>
+    <div class="flex flex-wrap gap-3 justify-center" data-aos="fade-up" data-aos-delay="150">
+      <a href="/contact/" class="btn-red">Get in Touch →</a>
+      <a href="/leadership/" class="inline-flex items-center gap-2 border border-white/30 text-white font-semibold px-6 py-3 rounded-full hover:bg-white/10 transition-colors text-sm">
+        Meet Our Team
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Animate timeline line on scroll
+  const line = document.getElementById('tl-line');
+  if (line) {
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { line.style.height = '100%'; obs.disconnect(); }
+    }, { threshold: 0.1 });
+    obs.observe(line.parentElement);
+  }
+</script>
 
 {% endblock %}

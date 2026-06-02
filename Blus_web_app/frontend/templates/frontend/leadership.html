@@ -1,40 +1,38 @@
 {% extends "base.html" %}
-{% block title %} Leadership — StudentHub {% endblock %}
+{% block title %}Leadership — BLUS{% endblock %}
 {% block nav_leadership %}active{% endblock %}
 
 {% block content %}
 
-<!-- ══════════ PAGE HERO ══════════ -->
+<!-- ══════════ HERO ══════════ -->
 <section class="relative bg-brand-blue overflow-hidden">
   <div class="absolute inset-0 opacity-[0.04]"
-    style="background-image: linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:60px 60px;">
-  </div>
+       style="background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:60px 60px;"></div>
+  <div class="blob-l absolute -top-10 -right-10 w-[380px] h-[380px] rounded-full bg-brand-red blur-3xl pointer-events-none"></div>
   <div class="absolute -bottom-1 left-0 right-0">
-    <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M0 60L1440 60L1440 20C1200 50 960 0 720 20C480 40 240 10 0 30Z" fill="white"/>
-    </svg>
+    <svg viewBox="0 0 1440 60" fill="none" preserveAspectRatio="none"><path d="M0 60L1440 60L1440 20C1200 50 960 0 720 20C480 40 240 10 0 30Z" fill="white"/></svg>
   </div>
   <div class="relative max-w-7xl mx-auto px-6 pt-20 pb-28">
-    <nav class="flex items-center gap-2 text-xs text-white/40 mb-6">
+    <nav class="flex items-center gap-2 text-xs text-white/40 mb-6 fade-up">
       <a href="/" class="hover:text-white/70 transition-colors">Home</a>
       <span>›</span>
       <span class="text-white/70">Leadership</span>
     </nav>
-    <h1 class="font-display text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4">
+    <h1 class="font-display text-5xl md:text-6xl font-extrabold text-white leading-tight mb-4 fade-up delay-1">
       Our <span class="text-brand-red">Leadership</span> Team
     </h1>
-    <p class="text-white/60 text-lg max-w-xl">
+    <p class="text-white/60 text-lg max-w-xl fade-up delay-2">
       Meet the dedicated people steering our community forward — passionate, driven, and committed to every student's success.
     </p>
   </div>
 </section>
 
-<!-- ══════════ SECTION INTRO ══════════ -->
+<!-- ══════════ INTRO ══════════ -->
 <section class="pt-20 pb-10 bg-white">
   <div class="max-w-7xl mx-auto px-6">
-    <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
+    <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-6" data-aos="fade-up">
       <div>
-        <span class="section-tag">Our Expert Crew</span>
+        <span class="section-tag">Executive Council</span>
         <h2 class="font-display text-4xl md:text-5xl font-bold text-gray-900 mt-4 leading-tight">
           Meet the people<br/>making it happen
         </h2>
@@ -50,63 +48,149 @@
 <section class="pb-24 bg-white">
   <div class="max-w-7xl mx-auto px-6">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
-      {% for admin in admins %}
-      <div class="group relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-400">
-        {% if admin.student.img %}
-        <img src="{{ admin.student.img.url }}"
-             alt="{{ admin.student.first_name }} {{ admin.student.last_name }}"
-             class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"/>
-        {% else %}
+
+      <!-- 1 -->
+      <div class="member-card group relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
+           data-aos="zoom-in" data-aos-delay="0">
         <div class="w-full h-full bg-gradient-to-br from-brand-blue to-brand-blue-md flex items-center justify-center">
-          <span class="font-display text-6xl font-extrabold text-white/20">
-            {{ admin.student.first_name|first }}{{ admin.student.last_name|first }}
-          </span>
+          <span class="font-display text-6xl font-extrabold text-white/20">JK</span>
         </div>
-        {% endif %}
-
-        <!-- Gradient overlay -->
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
-
-        <!-- Name / role bar -->
-        <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-0">
-          <p class="font-display font-bold text-white text-base leading-tight">
-            {{ admin.student.first_name }} {{ admin.student.last_name }}
-          </p>
-          <p class="text-white/60 text-xs mt-0.5">{{ admin.position }}</p>
+        <div class="card-info absolute bottom-0 left-0 right-0 p-4">
+          <p class="font-display font-bold text-white text-base leading-tight">James Kollie</p>
+          <p class="text-white/60 text-xs mt-0.5">President</p>
         </div>
-
-        <!-- Plus button (like reference design) -->
-        <div class="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:bg-brand-red group-hover:border-brand-red">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M6 2v8M2 6h8" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
+        <div class="card-plus absolute bottom-4 right-4 w-8 h-8 rounded-full bg-brand-red flex items-center justify-center">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
         </div>
       </div>
-      {% empty %}
-      <!-- Demo placeholders (remove once DB has data) -->
-      {% for slot in demo_slots %}
-      <div class="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-brand-blue to-brand-blue-md shadow-sm">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-        <div class="absolute bottom-0 left-0 right-0 p-4">
-          <div class="h-4 bg-white/20 rounded w-2/3 mb-1.5"></div>
-          <div class="h-3 bg-white/10 rounded w-1/2"></div>
+
+      <!-- 2 -->
+      <div class="member-card group relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
+           data-aos="zoom-in" data-aos-delay="60">
+        <div class="w-full h-full bg-gradient-to-br from-[#1e3a8a] to-brand-blue-md flex items-center justify-center">
+          <span class="font-display text-6xl font-extrabold text-white/20">MS</span>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+        <div class="card-info absolute bottom-0 left-0 right-0 p-4">
+          <p class="font-display font-bold text-white text-base leading-tight">Mary Sumo</p>
+          <p class="text-white/60 text-xs mt-0.5">Vice President</p>
+        </div>
+        <div class="card-plus absolute bottom-4 right-4 w-8 h-8 rounded-full bg-brand-red flex items-center justify-center">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
         </div>
       </div>
-      {% endfor %}
-      {% endempty %}
+
+      <!-- 3 -->
+      <div class="member-card group relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
+           data-aos="zoom-in" data-aos-delay="120">
+        <div class="w-full h-full bg-gradient-to-br from-brand-blue to-[#1e40af] flex items-center justify-center">
+          <span class="font-display text-6xl font-extrabold text-white/20">AF</span>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+        <div class="card-info absolute bottom-0 left-0 right-0 p-4">
+          <p class="font-display font-bold text-white text-base leading-tight">Anthony Freeman</p>
+          <p class="text-white/60 text-xs mt-0.5">Secretary-General</p>
+        </div>
+        <div class="card-plus absolute bottom-4 right-4 w-8 h-8 rounded-full bg-brand-red flex items-center justify-center">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="member-card group relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
+           data-aos="zoom-in" data-aos-delay="180">
+        <div class="w-full h-full bg-gradient-to-br from-[#1e2f6b] to-brand-blue flex items-center justify-center">
+          <span class="font-display text-6xl font-extrabold text-white/20">RT</span>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+        <div class="card-info absolute bottom-0 left-0 right-0 p-4">
+          <p class="font-display font-bold text-white text-base leading-tight">Rebecca Toe</p>
+          <p class="text-white/60 text-xs mt-0.5">Treasurer</p>
+        </div>
+        <div class="card-plus absolute bottom-4 right-4 w-8 h-8 rounded-full bg-brand-red flex items-center justify-center">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="member-card group relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
+           data-aos="zoom-in" data-aos-delay="0">
+        <div class="w-full h-full bg-gradient-to-br from-brand-blue-md to-brand-blue flex items-center justify-center">
+          <span class="font-display text-6xl font-extrabold text-white/20">EK</span>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+        <div class="card-info absolute bottom-0 left-0 right-0 p-4">
+          <p class="font-display font-bold text-white text-base leading-tight">Emmanuel Karmoh</p>
+          <p class="text-white/60 text-xs mt-0.5">Events Coordinator</p>
+        </div>
+        <div class="card-plus absolute bottom-4 right-4 w-8 h-8 rounded-full bg-brand-red flex items-center justify-center">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="member-card group relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
+           data-aos="zoom-in" data-aos-delay="60">
+        <div class="w-full h-full bg-gradient-to-br from-[#172554] to-brand-blue-md flex items-center justify-center">
+          <span class="font-display text-6xl font-extrabold text-white/20">PF</span>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+        <div class="card-info absolute bottom-0 left-0 right-0 p-4">
+          <p class="font-display font-bold text-white text-base leading-tight">Patience Flomo</p>
+          <p class="text-white/60 text-xs mt-0.5">Communications Officer</p>
+        </div>
+        <div class="card-plus absolute bottom-4 right-4 w-8 h-8 rounded-full bg-brand-red flex items-center justify-center">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="member-card group relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
+           data-aos="zoom-in" data-aos-delay="120">
+        <div class="w-full h-full bg-gradient-to-br from-brand-blue to-[#1d4ed8] flex items-center justify-center">
+          <span class="font-display text-6xl font-extrabold text-white/20">SW</span>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+        <div class="card-info absolute bottom-0 left-0 right-0 p-4">
+          <p class="font-display font-bold text-white text-base leading-tight">Solomon Wleh</p>
+          <p class="text-white/60 text-xs mt-0.5">Welfare Officer</p>
+        </div>
+        <div class="card-plus absolute bottom-4 right-4 w-8 h-8 rounded-full bg-brand-red flex items-center justify-center">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="member-card group relative rounded-2xl overflow-hidden aspect-[3/4] cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
+           data-aos="zoom-in" data-aos-delay="180">
+        <div class="w-full h-full bg-gradient-to-br from-[#1e2f6b] to-[#2340A8] flex items-center justify-center">
+          <span class="font-display text-6xl font-extrabold text-white/20">GN</span>
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
+        <div class="card-info absolute bottom-0 left-0 right-0 p-4">
+          <p class="font-display font-bold text-white text-base leading-tight">Grace Nimely</p>
+          <p class="text-white/60 text-xs mt-0.5">Academic Affairs Officer</p>
+        </div>
+        <div class="card-plus absolute bottom-4 right-4 w-8 h-8 rounded-full bg-brand-red flex items-center justify-center">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M2 6h8" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<!-- ══════════ JOIN CTA ══════════ -->
-<section class="py-0 pb-24 bg-white">
+<!-- ══════════ CTA CARDS ══════════ -->
+<section class="pb-24 bg-white">
   <div class="max-w-7xl mx-auto px-6">
     <div class="grid md:grid-cols-2 gap-5">
-      <!-- Join card -->
-      <div class="relative rounded-2xl bg-brand-blue overflow-hidden p-10 flex flex-col justify-between min-h-[240px]">
+
+      <div class="relative rounded-2xl bg-brand-blue overflow-hidden p-10 flex flex-col justify-between min-h-[240px]"
+           data-aos="fade-right">
         <div class="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-brand-red opacity-20 blur-2xl pointer-events-none"></div>
         <div>
-          <span class="section-tag" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);">Join our team</span>
+          <span class="section-tag" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);">Join our team</span>
           <h3 class="font-display text-3xl font-bold text-white mt-4 leading-snug">
             Start your journey<br/>with us today
           </h3>
@@ -117,8 +201,8 @@
         </a>
       </div>
 
-      <!-- Collaborate card -->
-      <div class="relative rounded-2xl border border-gray-100 bg-white overflow-hidden p-10 flex flex-col justify-between min-h-[240px] shadow-sm hover:shadow-lg transition-shadow">
+      <div class="relative rounded-2xl border border-gray-100 bg-white overflow-hidden p-10 flex flex-col justify-between min-h-[240px] shadow-sm hover:shadow-lg transition-shadow"
+           data-aos="fade-left">
         <div>
           <span class="section-tag">Let's collaborate</span>
           <h3 class="font-display text-3xl font-bold text-gray-900 mt-4 leading-snug">
@@ -127,6 +211,7 @@
         </div>
         <a href="/contact/" class="btn-red self-start mt-6">Contact Us →</a>
       </div>
+
     </div>
   </div>
 </section>

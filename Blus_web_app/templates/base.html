@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -31,74 +33,9 @@
       }
     }
   </script>
-  <style>
-    * { font-family: 'DM Sans', sans-serif; }
-    h1,h2,h3,h4,.font-display { font-family: 'Syne', sans-serif; }
-
-    .nav-link {
-      position: relative;
-      color: #ffffffcc;
-      font-size: 0.875rem;
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      transition: color 0.2s;
-    }
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: -2px; left: 0;
-      width: 0; height: 2px;
-      background: #E02B20;
-      transition: width 0.25s ease;
-    }
-    .nav-link:hover { color: #fff; }
-    .nav-link:hover::after { width: 100%; }
-    .nav-link.active { color: #fff; }
-    .nav-link.active::after { width: 100%; }
-
-    .btn-red {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: #E02B20; color: #fff;
-      padding: 0.625rem 1.5rem;
-      border-radius: 9999px;
-      font-weight: 600; font-size: 0.875rem;
-      letter-spacing: 0.02em;
-      transition: background 0.2s, transform 0.15s;
-    }
-    .btn-red:hover { background: #B8221A; transform: translateY(-1px); }
-
-    .btn-outline {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      border: 1.5px solid #E02B20; color: #E02B20;
-      padding: 0.625rem 1.5rem;
-      border-radius: 9999px;
-      font-weight: 600; font-size: 0.875rem;
-      transition: background 0.2s, color 0.2s, transform 0.15s;
-    }
-    .btn-outline:hover { background: #E02B20; color: #fff; transform: translateY(-1px); }
-
-    .section-tag {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      background: #EEF1FB; color: #2340A8;
-      font-size: 0.75rem; font-weight: 600;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      padding: 0.3rem 0.8rem; border-radius: 9999px;
-    }
-    .section-tag::before {
-      content: ''; width: 6px; height: 6px;
-      background: #E02B20; border-radius: 50%;
-    }
-
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(24px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-    .fade-up { animation: fadeUp 0.6s ease both; }
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.2s; }
-    .delay-3 { animation-delay: 0.3s; }
-    .delay-4 { animation-delay: 0.4s; }
-  </style>
+  <!-- Shared component styles (animations, buttons, nav, etc.) -->
+  <link rel="stylesheet" href="{% static 'css/main.css' %}"/>
+  {% block extra_css %}{% endblock %}
 </head>
 <body class="bg-white text-gray-900 antialiased">
 
@@ -118,12 +55,32 @@
         <a href="/" class="nav-link {% block nav_home %}{% endblock %}">Home</a>
         <a href="/about/" class="nav-link {% block nav_about %}{% endblock %}">About</a>
         <a href="/leadership/" class="nav-link {% block nav_leadership %}{% endblock %}">Leadership</a>
-        <a href="/blog/" class="nav-link {% block nav_blog %}{% endblock %}">Blog</a>
+        <a href="/news/" class="nav-link {% block nav_blog %}{% endblock %}">Blog</a>
         <a href="/contact/" class="nav-link {% block nav_contact %}{% endblock %}">Contact</a>
       </div>
 
-      <a href="/contact/" class="btn-red text-xs">Get in Touch</a>
+      <div class="flex items-center gap-3">
+        <a href="/contact/" class="btn-red text-xs hidden sm:inline-flex">Get in Touch</a>
+        <!-- Hamburger (mobile only) -->
+        <button id="mobile-menu-btn" class="md:hidden flex flex-col gap-1.5 p-1.5 text-white/70 hover:text-white transition-colors" aria-label="Toggle menu">
+          <span class="ham-bar block w-5 h-px bg-current rounded transition-all duration-300"></span>
+          <span class="ham-bar block w-5 h-px bg-current rounded transition-all duration-300"></span>
+          <span class="ham-bar block w-5 h-px bg-current rounded transition-all duration-300"></span>
+        </button>
+      </div>
     </nav>
+
+    <!-- Mobile dropdown -->
+    <div id="mobile-menu"
+         class="md:hidden overflow-hidden max-h-0 transition-[max-height] duration-300 ease-in-out border-t border-white/10">
+      <div class="max-w-7xl mx-auto px-6 py-3 flex flex-col gap-0.5">
+        <a href="/"           class="nav-link py-3 border-b border-white/5 text-sm block">Home</a>
+        <a href="/about/"     class="nav-link py-3 border-b border-white/5 text-sm block">About</a>
+        <a href="/leadership/"class="nav-link py-3 border-b border-white/5 text-sm block">Leadership</a>
+        <a href="/news/"      class="nav-link py-3 border-b border-white/5 text-sm block">Blog</a>
+        <a href="/contact/"   class="nav-link py-3 text-sm block">Contact</a>
+      </div>
+    </div>
   </header>
 
   <main>
@@ -159,7 +116,7 @@
             <li><a href="/" class="text-white/70 hover:text-white text-sm transition-colors">Home</a></li>
             <li><a href="/about/" class="text-white/70 hover:text-white text-sm transition-colors">About</a></li>
             <li><a href="/leadership/" class="text-white/70 hover:text-white text-sm transition-colors">Leadership</a></li>
-            <li><a href="/blog/" class="text-white/70 hover:text-white text-sm transition-colors">Blog</a></li>
+            <li><a href="/news/" class="text-white/70 hover:text-white text-sm transition-colors">Blog</a></li>
           </ul>
         </div>
 
@@ -182,5 +139,31 @@
     </div>
   </footer>
 
+  <script>
+    AOS.init({
+      duration: 650,
+      easing: 'ease-out-cubic',
+      once: true,
+      offset: 60,
+    });
+
+    // Mobile menu toggle
+    (function () {
+      const btn  = document.getElementById('mobile-menu-btn');
+      const menu = document.getElementById('mobile-menu');
+      const bars = btn && btn.querySelectorAll('.ham-bar');
+      if (!btn || !menu) return;
+      let open = false;
+      btn.addEventListener('click', () => {
+        open = !open;
+        menu.style.maxHeight = open ? menu.scrollHeight + 'px' : '0';
+        if (bars) {
+          bars[0].style.transform = open ? 'translateY(6px) rotate(45deg)'  : '';
+          bars[1].style.opacity   = open ? '0' : '1';
+          bars[2].style.transform = open ? 'translateY(-6px) rotate(-45deg)' : '';
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

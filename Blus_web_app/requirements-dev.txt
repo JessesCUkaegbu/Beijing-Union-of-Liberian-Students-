@@ -1,0 +1,12 @@
+# ── Development-only dependencies ─────────────────────────────────────────────
+# Install: pip install -r requirements-dev.txt
+# (This file extends requirements.txt)
+
+-r requirements.txt
+
+# Debugging
+django-debug-toolbar==6.3.0
+
+# Shell enhancements
+django-extensions==4.1
+ipython==9.13.0

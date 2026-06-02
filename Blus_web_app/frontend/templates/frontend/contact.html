@@ -1,43 +1,40 @@
 {% extends "base.html" %}
-{% block title %} Contact — StudentHub {% endblock %}
-{% block nav_contact %} active {% endblock %}
+{% block title %}Contact — BLUS{% endblock %}
+{% block nav_contact %}active{% endblock %}
 
 {% block content %}
 
 <!-- ══════════ HERO ══════════ -->
 <section class="relative bg-brand-blue overflow-hidden">
   <div class="absolute inset-0 opacity-[0.04]"
-    style="background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:60px 60px;">
-  </div>
-  <div class="absolute -top-20 -right-20 w-[350px] h-[350px] rounded-full bg-brand-red opacity-10 blur-3xl pointer-events-none"></div>
+       style="background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:60px 60px;"></div>
+  <div class="blob-c absolute -top-20 -right-20 w-[350px] h-[350px] rounded-full bg-brand-red blur-3xl pointer-events-none"></div>
   <div class="absolute -bottom-1 left-0 right-0">
-    <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M0 60L1440 60L1440 20C1200 50 960 0 720 20C480 40 240 10 0 30Z" fill="white"/>
-    </svg>
+    <svg viewBox="0 0 1440 60" fill="none" preserveAspectRatio="none"><path d="M0 60L1440 60L1440 20C1200 50 960 0 720 20C480 40 240 10 0 30Z" fill="white"/></svg>
   </div>
   <div class="relative max-w-7xl mx-auto px-6 pt-20 pb-28">
-    <nav class="flex items-center gap-2 text-xs text-white/40 mb-6">
+    <nav class="flex items-center gap-2 text-xs text-white/40 mb-6 fade-up">
       <a href="/" class="hover:text-white/70 transition-colors">Home</a>
       <span>›</span>
       <span class="text-white/70">Contact</span>
     </nav>
-    <h1 class="font-display text-5xl md:text-6xl font-extrabold text-white leading-[1.05] mb-4">
+    <h1 class="font-display text-5xl md:text-6xl font-extrabold text-white leading-[1.05] mb-4 fade-up delay-1">
       Let's <span class="text-brand-red">Talk</span>
     </h1>
-    <p class="text-white/60 text-lg max-w-xl">
-      Have questions about StudentHub, or want to get involved? Reach out — we'd love to hear from you.
+    <p class="text-white/60 text-lg max-w-xl fade-up delay-2">
+      Have questions about BLUS, or want to get involved? Reach out — we'd love to hear from you.
     </p>
   </div>
 </section>
 
-<!-- ══════════ CONTACT CONTENT ══════════ -->
+<!-- ══════════ CONTACT BODY ══════════ -->
 <section class="py-24 bg-white">
   <div class="max-w-7xl mx-auto px-6">
     <div class="grid md:grid-cols-5 gap-12">
 
-      <!-- Info column -->
+      <!-- Left: info -->
       <div class="md:col-span-2 space-y-8">
-        <div>
+        <div data-aos="fade-right">
           <span class="section-tag">Get in Touch</span>
           <h2 class="font-display text-3xl font-bold text-gray-900 mt-4 leading-tight">
             We're here to help
@@ -47,41 +44,43 @@
           </p>
         </div>
 
-        <!-- Contact cards -->
         <div class="space-y-4">
-          <div class="flex items-start gap-4 p-5 rounded-2xl bg-gray-50 border border-gray-100">
+          <div class="info-card flex items-start gap-4 p-5 rounded-2xl bg-gray-50 border border-gray-100"
+               data-aos="fade-right" data-aos-delay="0">
             <div class="w-10 h-10 rounded-xl bg-brand-red flex items-center justify-center flex-shrink-0">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4l6 4.5L14 4M2 4h12v9a1 1 0 01-1 1H3a1 1 0 01-1-1V4z" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div>
               <p class="font-semibold text-gray-800 text-sm">Email Us</p>
-              <p class="text-gray-500 text-sm mt-0.5">support@studenthub.org</p>
+              <p class="text-gray-500 text-sm mt-0.5">support@blus.org</p>
             </div>
           </div>
 
-          <div class="flex items-start gap-4 p-5 rounded-2xl bg-gray-50 border border-gray-100">
+          <div class="info-card flex items-start gap-4 p-5 rounded-2xl bg-gray-50 border border-gray-100"
+               data-aos="fade-right" data-aos-delay="80">
             <div class="w-10 h-10 rounded-xl bg-brand-blue flex items-center justify-center flex-shrink-0">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4a2 2 0 012-2h1.28a1 1 0 01.98.8l.37 1.84a1 1 0 01-.27.94L5.3 6.64a11 11 0 005.06 5.06l1.06-1.08a1 1 0 01.94-.27l1.84.37a1 1 0 01.8.98V13a2 2 0 01-2 2C5.94 15 1 10.06 1 4z" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
             </div>
             <div>
-              <p class="font-semibold text-gray-800 text-sm">Call Us</p>
-              <p class="text-gray-500 text-sm mt-0.5">+1 (800) 555-0100</p>
+              <p class="font-semibold text-gray-800 text-sm">WeChat / WhatsApp</p>
+              <p class="text-gray-500 text-sm mt-0.5">Available on request</p>
             </div>
           </div>
 
-          <div class="flex items-start gap-4 p-5 rounded-2xl bg-gray-50 border border-gray-100">
+          <div class="info-card flex items-start gap-4 p-5 rounded-2xl bg-gray-50 border border-gray-100"
+               data-aos="fade-right" data-aos-delay="160">
             <div class="w-10 h-10 rounded-xl bg-brand-red flex items-center justify-center flex-shrink-0">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5A5 5 0 108 11.5a5 5 0 000-10zm0 9l-3 3.5h6L8 10.5z" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="7" r="4" stroke="white" stroke-width="1.4"/><path d="M8 11l-3 4h6l-3-4z" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div>
               <p class="font-semibold text-gray-800 text-sm">Office Hours</p>
-              <p class="text-gray-500 text-sm mt-0.5">Mon – Fri, 9am – 5pm</p>
+              <p class="text-gray-500 text-sm mt-0.5">Mon – Fri, 9am – 5pm (CST)</p>
             </div>
           </div>
         </div>
 
         <!-- Social -->
-        <div>
+        <div data-aos="fade-right" data-aos-delay="240">
           <p class="text-sm font-semibold text-gray-700 mb-3">Follow us</p>
           <div class="flex gap-3">
             <a href="#" class="w-10 h-10 rounded-xl bg-brand-blue-lt border border-brand-blue/10 flex items-center justify-center text-brand-blue text-xs font-bold hover:bg-brand-blue hover:text-white transition-colors">f</a>
@@ -91,48 +90,43 @@
         </div>
       </div>
 
-      <!-- Form column -->
-      <div class="md:col-span-3">
+      <!-- Right: form -->
+      <div class="md:col-span-3" data-aos="fade-left" data-aos-delay="100">
         <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 md:p-10">
-          {% if messages %}
-          {% for message in messages %}
-          <div class="mb-6 p-4 rounded-xl {% if message.tags == 'success' %}bg-green-50 border border-green-200 text-green-700{% else %}bg-red-50 border border-red-200 text-red-700{% endif %} text-sm font-medium">
-            {{ message }}
+
+          <!-- Success state (hidden until form submit) -->
+          <div id="form-success" class="hidden success-pop text-center py-10">
+            <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6 14l6 6 10-12" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h3 class="font-display text-2xl font-bold text-gray-900 mb-2">Message sent!</h3>
+            <p class="text-gray-500 text-sm mb-6">Thank you for reaching out. We'll get back to you within 24 hours.</p>
+            <button onclick="resetForm()" class="btn-outline text-sm px-6 py-2.5">Send another message</button>
           </div>
-          {% endfor %}
-          {% endif %}
 
-          <h3 class="font-display font-bold text-xl text-gray-900 mb-6">Send us a message</h3>
-
-          <form method="POST" action="/contact/" class="space-y-5">
-            {% csrf_token %}
+          <!-- Form -->
+          <form id="contact-form" class="space-y-5" onsubmit="handleSubmit(event)">
+            <h3 class="font-display font-bold text-xl text-gray-900 mb-6">Send us a message</h3>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">First Name</label>
-                <input type="text" name="first_name" required
-                  class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10 transition-all"
-                  placeholder="Jane"/>
+                <input type="text" name="first_name" required class="form-input" placeholder="Jane"/>
               </div>
               <div>
                 <label class="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">Last Name</label>
-                <input type="text" name="last_name" required
-                  class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10 transition-all"
-                  placeholder="Smith"/>
+                <input type="text" name="last_name" required class="form-input" placeholder="Smith"/>
               </div>
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">Email</label>
-              <input type="email" name="email" required
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10 transition-all"
-                placeholder="jane@university.edu"/>
+              <input type="email" name="email" required class="form-input" placeholder="jane@university.edu"/>
             </div>
 
             <div>
               <label class="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">Subject</label>
-              <select name="subject"
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-900 text-sm focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10 transition-all appearance-none bg-white">
+              <select name="subject" class="form-input appearance-none bg-white" style="background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%239ca3af' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 1rem center;">
                 <option value="">Select a topic…</option>
                 <option value="membership">Membership enquiry</option>
                 <option value="events">Events &amp; activities</option>
@@ -144,13 +138,12 @@
 
             <div>
               <label class="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-2">Message</label>
-              <textarea name="message" rows="5" required
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-gray-900 text-sm placeholder-gray-400 focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10 transition-all resize-none"
-                placeholder="Tell us what's on your mind…"></textarea>
+              <textarea name="message" rows="5" required class="form-input resize-none"
+                        placeholder="Tell us what's on your mind…"></textarea>
             </div>
 
-            <button type="submit" class="btn-red w-full justify-center py-3.5 text-sm mt-2">
-              Send Message
+            <button type="submit" class="btn-red w-full justify-center py-3.5 text-sm mt-2" id="submit-btn">
+              <span id="btn-label">Send Message</span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
           </form>
@@ -160,5 +153,32 @@
     </div>
   </div>
 </section>
+
+<script>
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    const label = document.getElementById('btn-label');
+
+    // Brief loading state
+    btn.disabled = true;
+    label.textContent = 'Sending…';
+
+    setTimeout(() => {
+      document.getElementById('contact-form').classList.add('hidden');
+      const success = document.getElementById('form-success');
+      success.classList.remove('hidden');
+    }, 900);
+  }
+
+  function resetForm() {
+    document.getElementById('contact-form').reset();
+    document.getElementById('contact-form').classList.remove('hidden');
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = false;
+    document.getElementById('btn-label').textContent = 'Send Message';
+    document.getElementById('form-success').classList.add('hidden');
+  }
+</script>
 
 {% endblock %}

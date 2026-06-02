@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %} Blog — StudentHub {% endblock %}
+{% block title %}Blog &amp; News — BLUS{% endblock %}
 {% block nav_blog %}active{% endblock %}
 
 {% block content %}
@@ -7,133 +7,233 @@
 <!-- ══════════ HERO ══════════ -->
 <section class="relative bg-brand-blue overflow-hidden">
   <div class="absolute inset-0 opacity-[0.04]"
-    style="background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:60px 60px;">
-  </div>
+       style="background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:60px 60px;"></div>
+  <div class="blob-blog absolute -top-16 right-10 w-[360px] h-[360px] rounded-full bg-brand-red blur-3xl pointer-events-none"></div>
   <div class="absolute -bottom-1 left-0 right-0">
-    <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <path d="M0 60L1440 60L1440 20C1200 50 960 0 720 20C480 40 240 10 0 30Z" fill="white"/>
-    </svg>
+    <svg viewBox="0 0 1440 60" fill="none" preserveAspectRatio="none"><path d="M0 60L1440 60L1440 20C1200 50 960 0 720 20C480 40 240 10 0 30Z" fill="white"/></svg>
   </div>
   <div class="relative max-w-7xl mx-auto px-6 pt-20 pb-28">
-    <nav class="flex items-center gap-2 text-xs text-white/40 mb-6">
+    <nav class="flex items-center gap-2 text-xs text-white/40 mb-6 fade-up">
       <a href="/" class="hover:text-white/70 transition-colors">Home</a>
       <span>›</span>
       <span class="text-white/70">Blog</span>
     </nav>
-    <h1 class="font-display text-5xl md:text-6xl font-extrabold text-white leading-[1.05] mb-4">
+    <h1 class="font-display text-5xl md:text-6xl font-extrabold text-white leading-[1.05] mb-4 fade-up delay-1">
       Stories &amp; <span class="text-brand-red">Updates</span>
     </h1>
-    <p class="text-white/60 text-lg max-w-xl">
-      News, announcements, and stories from our student community.
+    <p class="text-white/60 text-lg max-w-xl fade-up delay-2">
+      News, announcements, and stories from the BLUS student community.
     </p>
   </div>
 </section>
 
 <!-- ══════════ FEATURED POST ══════════ -->
-{% if featured_post %}
 <section class="pt-20 pb-10 bg-white">
   <div class="max-w-7xl mx-auto px-6">
-    <a href="/blog/{{ featured_post.id }}/"
-       class="group grid md:grid-cols-2 gap-8 bg-gray-50 rounded-3xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+    <div class="group grid md:grid-cols-2 gap-0 bg-gray-50 rounded-3xl overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+         data-aos="fade-up">
       <div class="aspect-video md:aspect-auto overflow-hidden">
-        {% if featured_post.img %}
-        <img src="{{ featured_post.img.url }}" alt="{{ featured_post.title }}"
-             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 min-h-[280px]"/>
-        {% else %}
         <div class="w-full min-h-[280px] h-full bg-gradient-to-br from-brand-blue to-brand-blue-md flex items-center justify-center">
-          <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><path d="M10 20h40M10 30h28M10 40h34" stroke="white" stroke-opacity="0.2" stroke-width="3.5" stroke-linecap="round"/></svg>
+          <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><path d="M10 20h40M10 30h28M10 40h34" stroke="white" stroke-opacity="0.18" stroke-width="3.5" stroke-linecap="round"/></svg>
         </div>
-        {% endif %}
       </div>
       <div class="p-8 md:p-12 flex flex-col justify-center">
         <span class="section-tag self-start mb-4">Featured</span>
         <h2 class="font-display text-3xl font-bold text-gray-900 leading-snug mb-3 group-hover:text-brand-red transition-colors">
-          {{ featured_post.title }}
+          Welcome to the New BLUS Digital Platform
         </h2>
-        <p class="text-gray-500 leading-relaxed mb-5">{{ featured_post.content|truncatewords:30 }}</p>
+        <p class="text-gray-500 leading-relaxed mb-5">
+          We're excited to launch the new BLUS student platform — a unified hub for managing student life, events, finance, and community news all in one place.
+        </p>
         <div class="flex items-center gap-4 text-sm text-gray-400">
-          <span>By {{ featured_post.author.student.first_name }} {{ featured_post.author.student.last_name }}</span>
+          <span>By James Kollie</span>
           <span>·</span>
-          <span>{{ featured_post.created_at|date:"M d, Y" }}</span>
+          <span>May 1, 2025</span>
         </div>
         <span class="btn-red self-start mt-6 text-sm">Read Article →</span>
       </div>
-    </a>
+    </div>
   </div>
 </section>
-{% endif %}
 
 <!-- ══════════ POST GRID ══════════ -->
 <section class="py-16 bg-white">
   <div class="max-w-7xl mx-auto px-6">
-    <div class="flex items-center justify-between mb-10">
+    <div class="flex items-center justify-between mb-10" data-aos="fade-up">
       <h2 class="font-display text-2xl font-bold text-gray-900">All Posts</h2>
-      <p class="text-gray-400 text-sm">{{ posts.count }} article{{ posts.count|pluralize }}</p>
+      <p class="text-gray-400 text-sm">6 articles</p>
     </div>
 
     <div class="grid md:grid-cols-3 gap-6">
-      {% for post in posts %}
-      <article class="group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
-        <a href="/blog/{{ post.id }}/" class="block overflow-hidden">
-          {% if post.img %}
-          <div class="aspect-video overflow-hidden">
-            <img src="{{ post.img.url }}" alt="{{ post.title }}"
-                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
-          </div>
-          {% else %}
-          <div class="aspect-video bg-gradient-to-br from-brand-blue-lt to-brand-red-lt flex items-center justify-center">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M6 12h24M6 18h16M6 24h20" stroke="#1A2B6B" stroke-opacity="0.15" stroke-width="2.5" stroke-linecap="round"/></svg>
-          </div>
-          {% endif %}
-        </a>
+
+      <!-- Post 1 -->
+      <article class="post-card group rounded-2xl overflow-hidden border border-gray-100 flex flex-col"
+               data-aos="fade-up" data-aos-delay="0">
+        <div class="aspect-video overflow-hidden bg-gradient-to-br from-brand-blue-lt to-brand-red-lt flex items-center justify-center">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M6 12h24M6 18h16M6 24h20" stroke="#1A2B6B" stroke-opacity="0.15" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
         <div class="p-6 flex flex-col flex-1">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="text-xs text-brand-red font-semibold uppercase tracking-widest">{{ post.created_at|date:"M d, Y" }}</span>
-          </div>
+          <p class="text-xs text-brand-red font-semibold uppercase tracking-widest mb-2">Apr 20, 2025</p>
           <h3 class="font-display font-bold text-lg text-gray-900 leading-snug mb-2 group-hover:text-brand-red transition-colors flex-1">
-            <a href="/blog/{{ post.id }}/">{{ post.title }}</a>
+            Annual Cultural Night 2025: A Night to Remember
           </h3>
-          <p class="text-gray-500 text-sm line-clamp-2 mb-4">{{ post.content|truncatewords:18 }}</p>
-          <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+          <p class="text-gray-500 text-sm line-clamp-2 mb-4">
+            An extraordinary evening of Liberian culture, music, food, and community spirit came alive at our annual gala event.
+          </p>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
             <div class="flex items-center gap-2">
-              <div class="w-7 h-7 rounded-full bg-brand-blue-lt flex items-center justify-center text-xs font-bold text-brand-blue">
-                {{ post.author.student.first_name|first }}
-              </div>
-              <span class="text-xs text-gray-400">{{ post.author.student.first_name }}</span>
+              <div class="w-7 h-7 rounded-full bg-brand-blue-lt flex items-center justify-center text-xs font-bold text-brand-blue">J</div>
+              <span class="text-xs text-gray-400">James Kollie</span>
             </div>
-            <a href="/blog/{{ post.id }}/" class="text-brand-red text-xs font-semibold hover:underline">Read →</a>
+            <a href="#" class="text-brand-red text-xs font-semibold hover:underline">Read →</a>
           </div>
         </div>
       </article>
-      {% empty %}
-      {% for i in "123456" %}
-      <article class="rounded-2xl overflow-hidden border border-gray-100">
-        <div class="aspect-video bg-gradient-to-br from-brand-blue-lt to-brand-red-lt"></div>
-        <div class="p-6">
-          <div class="h-3 bg-gray-100 rounded w-1/3 mb-3"></div>
-          <div class="h-5 bg-gray-100 rounded w-3/4 mb-2"></div>
-          <div class="h-3 bg-gray-100 rounded w-full mb-1"></div>
-          <div class="h-3 bg-gray-100 rounded w-2/3"></div>
+
+      <!-- Post 2 -->
+      <article class="post-card group rounded-2xl overflow-hidden border border-gray-100 flex flex-col"
+               data-aos="fade-up" data-aos-delay="100">
+        <div class="aspect-video overflow-hidden bg-gradient-to-br from-brand-red-lt to-brand-blue-lt flex items-center justify-center">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M6 12h24M6 18h16M6 24h20" stroke="#E02B20" stroke-opacity="0.15" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <p class="text-xs text-brand-red font-semibold uppercase tracking-widest mb-2">Mar 15, 2025</p>
+          <h3 class="font-display font-bold text-lg text-gray-900 leading-snug mb-2 group-hover:text-brand-red transition-colors flex-1">
+            Student Welfare Fund: How to Apply Before June
+          </h3>
+          <p class="text-gray-500 text-sm line-clamp-2 mb-4">
+            BLUS has opened applications for the student welfare fund. Here's everything you need to know before the June deadline.
+          </p>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full bg-brand-blue-lt flex items-center justify-center text-xs font-bold text-brand-blue">M</div>
+              <span class="text-xs text-gray-400">Mary Sumo</span>
+            </div>
+            <a href="#" class="text-brand-red text-xs font-semibold hover:underline">Read →</a>
+          </div>
         </div>
       </article>
-      {% endfor %}
-      {% endempty %}
+
+      <!-- Post 3 -->
+      <article class="post-card group rounded-2xl overflow-hidden border border-gray-100 flex flex-col"
+               data-aos="fade-up" data-aos-delay="200">
+        <div class="aspect-video overflow-hidden bg-gradient-to-br from-brand-blue-lt to-brand-red-lt flex items-center justify-center">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M6 12h24M6 18h16M6 24h20" stroke="#1A2B6B" stroke-opacity="0.15" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <p class="text-xs text-brand-red font-semibold uppercase tracking-widest mb-2">Feb 8, 2025</p>
+          <h3 class="font-display font-bold text-lg text-gray-900 leading-snug mb-2 group-hover:text-brand-red transition-colors flex-1">
+            New Executive Board Announced for 2025-26
+          </h3>
+          <p class="text-gray-500 text-sm line-clamp-2 mb-4">
+            The BLUS general assembly has elected a new executive board to lead the association into the new academic year.
+          </p>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full bg-brand-blue-lt flex items-center justify-center text-xs font-bold text-brand-blue">A</div>
+              <span class="text-xs text-gray-400">Anthony Freeman</span>
+            </div>
+            <a href="#" class="text-brand-red text-xs font-semibold hover:underline">Read →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Post 4 -->
+      <article class="post-card group rounded-2xl overflow-hidden border border-gray-100 flex flex-col"
+               data-aos="fade-up" data-aos-delay="0">
+        <div class="aspect-video overflow-hidden bg-gradient-to-br from-brand-red-lt to-brand-blue-lt flex items-center justify-center">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M6 12h24M6 18h16M6 24h20" stroke="#E02B20" stroke-opacity="0.15" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <p class="text-xs text-brand-red font-semibold uppercase tracking-widest mb-2">Jan 22, 2025</p>
+          <h3 class="font-display font-bold text-lg text-gray-900 leading-snug mb-2 group-hover:text-brand-red transition-colors flex-1">
+            BLUS Scholarship Programme: Applications Now Open
+          </h3>
+          <p class="text-gray-500 text-sm line-clamp-2 mb-4">
+            The BLUS scholarship programme is now accepting applications. Find out eligibility criteria and how to apply today.
+          </p>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full bg-brand-blue-lt flex items-center justify-center text-xs font-bold text-brand-blue">R</div>
+              <span class="text-xs text-gray-400">Rebecca Toe</span>
+            </div>
+            <a href="#" class="text-brand-red text-xs font-semibold hover:underline">Read →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Post 5 -->
+      <article class="post-card group rounded-2xl overflow-hidden border border-gray-100 flex flex-col"
+               data-aos="fade-up" data-aos-delay="100">
+        <div class="aspect-video overflow-hidden bg-gradient-to-br from-brand-blue-lt to-brand-red-lt flex items-center justify-center">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M6 12h24M6 18h16M6 24h20" stroke="#1A2B6B" stroke-opacity="0.15" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <p class="text-xs text-brand-red font-semibold uppercase tracking-widest mb-2">Dec 10, 2024</p>
+          <h3 class="font-display font-bold text-lg text-gray-900 leading-snug mb-2 group-hover:text-brand-red transition-colors flex-1">
+            Year in Review: Our Biggest Milestones in 2024
+          </h3>
+          <p class="text-gray-500 text-sm line-clamp-2 mb-4">
+            From record event attendance to launching new student support services — here's everything BLUS achieved in 2024.
+          </p>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full bg-brand-blue-lt flex items-center justify-center text-xs font-bold text-brand-blue">E</div>
+              <span class="text-xs text-gray-400">Emmanuel Karmoh</span>
+            </div>
+            <a href="#" class="text-brand-red text-xs font-semibold hover:underline">Read →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Post 6 -->
+      <article class="post-card group rounded-2xl overflow-hidden border border-gray-100 flex flex-col"
+               data-aos="fade-up" data-aos-delay="200">
+        <div class="aspect-video overflow-hidden bg-gradient-to-br from-brand-red-lt to-brand-blue-lt flex items-center justify-center">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M6 12h24M6 18h16M6 24h20" stroke="#E02B20" stroke-opacity="0.15" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <p class="text-xs text-brand-red font-semibold uppercase tracking-widest mb-2">Nov 5, 2024</p>
+          <h3 class="font-display font-bold text-lg text-gray-900 leading-snug mb-2 group-hover:text-brand-red transition-colors flex-1">
+            Tips for Navigating Life as a Liberian Student in Beijing
+          </h3>
+          <p class="text-gray-500 text-sm line-clamp-2 mb-4">
+            Practical advice on housing, language, banking, and making the most of your time studying in Beijing.
+          </p>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full bg-brand-blue-lt flex items-center justify-center text-xs font-bold text-brand-blue">P</div>
+              <span class="text-xs text-gray-400">Patience Flomo</span>
+            </div>
+            <a href="#" class="text-brand-red text-xs font-semibold hover:underline">Read →</a>
+          </div>
+        </div>
+      </article>
+
     </div>
 
-    <!-- Pagination -->
-    {% if posts.has_other_pages %}
-    <div class="flex justify-center gap-2 mt-12">
-      {% if posts.has_previous %}
-      <a href="?page={{ posts.previous_page_number }}" class="btn-outline text-sm">← Previous</a>
-      {% endif %}
-      <span class="inline-flex items-center px-4 py-2 text-sm text-gray-500">
-        Page {{ posts.number }} of {{ posts.paginator.num_pages }}
-      </span>
-      {% if posts.has_next %}
-      <a href="?page={{ posts.next_page_number }}" class="btn-red text-sm">Next →</a>
-      {% endif %}
+    <!-- Load more placeholder -->
+    <div class="flex justify-center mt-12" data-aos="fade-up">
+      <button class="btn-outline px-8 py-3 text-sm" onclick="this.textContent='More posts coming soon…';this.disabled=true;this.classList.add('opacity-50','cursor-not-allowed');">
+        Load More Posts
+      </button>
     </div>
-    {% endif %}
+  </div>
+</section>
+
+<!-- ══════════ NEWSLETTER ══════════ -->
+<section class="py-20 bg-gray-50">
+  <div class="max-w-2xl mx-auto px-6 text-center" data-aos="zoom-in">
+    <span class="section-tag">Stay Updated</span>
+    <h2 class="font-display text-3xl font-bold text-gray-900 mt-4 mb-3">Never miss a post</h2>
+    <p class="text-gray-500 text-sm mb-8">Get the latest BLUS news, events, and announcements delivered to you.</p>
+    <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+      <input type="email" placeholder="your@email.com"
+             class="flex-1 px-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-brand-red focus:ring-2 focus:ring-brand-red/10 transition-all"/>
+      <button class="btn-red px-6 py-3 text-sm whitespace-nowrap" onclick="this.previousElementSibling.value='';this.textContent='✓ Subscribed!';this.classList.remove('bg-brand-red');this.classList.add('bg-green-600');">
+        Subscribe
+      </button>
+    </div>
   </div>
 </section>
 
