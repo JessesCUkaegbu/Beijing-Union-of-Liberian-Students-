@@ -1,25 +1,13 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView
-
-from .forms import EventForm
-from .models import Event
+from django.views.generic import TemplateView
 
 
-class EventListView(ListView):
-    model = Event
+class EventListView(TemplateView):
     template_name = "events/list.html"
-    context_object_name = "events"
 
 
-class EventDetailView(DetailView):
-    model = Event
+class EventDetailView(TemplateView):
     template_name = "events/detail.html"
-    context_object_name = "event"
 
 
-class EventCreateView(LoginRequiredMixin, CreateView):
-    model = Event
-    form_class = EventForm
+class EventCreateView(TemplateView):
     template_name = "events/add.html"
-    success_url = reverse_lazy("events:list")
