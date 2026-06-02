@@ -22,7 +22,7 @@ environ.Env.read_env(BASE_DIR / ".env")
 # ── Security ───────────────────────────────────────────────────────────────────
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
-ALLOWED_HOSTS = env("ALLOWED_HOSTS")
+ALLOWED_HOSTS = env("ALLOWED_HOSTS") + ["healthcheck.railway.app"]
 
 # Required for Railway's HTTPS proxy and any custom domain
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
@@ -158,9 +158,16 @@ CORS_ALLOW_CREDENTIALS = True
 
 # ── Production security hardening (applied only when DEBUG=False) ──────────────
 if not DEBUG:
-    # Trust the X-Forwarded-Proto header set by Railway's load balancer
+    # Trust the X-Forwarded-Proto header set by Railway's load balancer.
+    # This tells Django a request is HTTPS even though Railway forwards it as HTTP internally.
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-    SECURE_SSL_REDIRECT = True
+
+    # SECURE_SSL_REDIRECT is intentionally OFF on Railway.
+    # Railway's healthcheck sends plain HTTP requests to / and expects a 200.
+    # If this were True, Django would return a 301 redirect → healthcheck sees
+    # a redirect instead of 200 → deployment times out and fails.
+    # SSL is already enforced at Railway's load balancer level, so this is safe.
+    SECURE_SSL_REDIRECT = False
 
     SECURE_HSTS_SECONDS = 31_536_000   # 1 year
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
