@@ -4,6 +4,8 @@ Uses django-environ to read .env.
 Database auto-switches: SQLite locally, PostgreSQL on Railway (via DATABASE_URL).
 """
 
+import os
+
 import environ
 from pathlib import Path
 
@@ -22,10 +24,21 @@ environ.Env.read_env(BASE_DIR / ".env")
 # ── Security ───────────────────────────────────────────────────────────────────
 SECRET_KEY = env("SECRET_KEY")
 DEBUG = env("DEBUG")
-ALLOWED_HOSTS = env("ALLOWED_HOSTS") + ["healthcheck.railway.app"]
 
-# Required for Railway's HTTPS proxy and any custom domain
-CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
+# Railway automatically injects RAILWAY_PUBLIC_DOMAIN into every service.
+# We read it here so ALLOWED_HOSTS and CSRF_TRUSTED_ORIGINS always stay in sync
+# with the actual deployment domain — no manual copy-paste required.
+_railway_domain = os.environ.get("RAILWAY_PUBLIC_DOMAIN", "")
+
+ALLOWED_HOSTS = env("ALLOWED_HOSTS") + ["healthcheck.railway.app"]
+if _railway_domain:
+    ALLOWED_HOSTS.append(_railway_domain)
+
+# CSRF_TRUSTED_ORIGINS requires the full https:// prefix.
+# Railway's domain is added automatically from RAILWAY_PUBLIC_DOMAIN.
+CSRF_TRUSTED_ORIGINS = list(env("CSRF_TRUSTED_ORIGINS"))
+if _railway_domain:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{_railway_domain}")
 
 # ── Applications ───────────────────────────────────────────────────────────────
 INSTALLED_APPS = [
