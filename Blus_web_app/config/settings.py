@@ -1,44 +1,73 @@
 """
 BLUS Web App — Django Settings
-Uses django-environ to read .env.
-Database auto-switches: SQLite locally, PostgreSQL on Railway (via DATABASE_URL).
+
+Environment-driven config using django-environ + dj-database-url.
+- Local:   reads values from a .env file (DEBUG on, SQLite).
+- Railway: env vars are injected directly; PostgreSQL via DATABASE_URL.
 """
 
+from pathlib import Path
 import os
 
 import environ
-from pathlib import Path
+import dj_database_url
 
 # ── Paths ──────────────────────────────────────────────────────────────────────
+# settings.py lives at  <project>/config/settings.py
+# so .parent.parent == <project>/  (where manage.py and db.sqlite3 live).
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ── Environ setup ──────────────────────────────────────────────────────────────
-env = environ.Env(
-    DEBUG=(bool, False),
-    ALLOWED_HOSTS=(list, ["127.0.0.1", "localhost"]),
-    CSRF_TRUSTED_ORIGINS=(list, []),
-    CORS_ALLOWED_ORIGINS=(list, []),
+env = environ.Env()
+
+# Load the .env file ONLY in local development. On Railway the file does not
+# exist (env vars are injected), and calling read_env on a missing file would
+# raise FileNotFoundError. The guard makes the same code safe in both places.
+_env_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(_env_file):
+    environ.Env.read_env(_env_file)
+
+# ── Core flags ─────────────────────────────────────────────────────────────────
+SECRET_KEY = env.str("SECRET_KEY")
+DEBUG = env.bool("DEBUG", default=False)
+
+# Explicit production switch. Set IS_PRODUCTION=True on Railway.
+# Drives SSL-require on the DB and all the security hardening at the bottom.
+IS_PRODUCTION = env.bool("IS_PRODUCTION", default=False)
+
+# ── Hosts / CSRF ───────────────────────────────────────────────────────────────
+# Override these on Railway via env vars. Defaults cover local + the live domain.
+ALLOWED_HOSTS = env.list(
+    "ALLOWED_HOSTS",
+    default=[
+        "127.0.0.1",
+        "localhost",
+        "beijing-union-of-liberian-students.up.railway.app",
+    ],
 )
-environ.Env.read_env(BASE_DIR / ".env")
 
-# ── Security ───────────────────────────────────────────────────────────────────
-SECRET_KEY = env("SECRET_KEY")
-DEBUG = env("DEBUG")
+CSRF_TRUSTED_ORIGINS = env.list(
+    "CSRF_TRUSTED_ORIGINS",
+    default=[
+        "http://127.0.0.1:8000",
+        "http://localhost:8000",
+        "https://beijing-union-of-liberian-students.up.railway.app",
+    ],
+)
 
-# Railway automatically injects RAILWAY_PUBLIC_DOMAIN into every service.
-# We read it here so ALLOWED_HOSTS and CSRF_TRUSTED_ORIGINS always stay in sync
-# with the actual deployment domain — no manual copy-paste required.
+# Railway injects RAILWAY_PUBLIC_DOMAIN automatically. Add it to both lists so the
+# app keeps working even if the domain changes or the env vars above are missing.
 _railway_domain = os.environ.get("RAILWAY_PUBLIC_DOMAIN", "")
-
-ALLOWED_HOSTS = env("ALLOWED_HOSTS") + ["healthcheck.railway.app"]
 if _railway_domain:
-    ALLOWED_HOSTS.append(_railway_domain)
+    if _railway_domain not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(_railway_domain)
+    _railway_origin = f"https://{_railway_domain}"
+    if _railway_origin not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append(_railway_origin)
 
-# CSRF_TRUSTED_ORIGINS requires the full https:// prefix.
-# Railway's domain is added automatically from RAILWAY_PUBLIC_DOMAIN.
-CSRF_TRUSTED_ORIGINS = list(env("CSRF_TRUSTED_ORIGINS"))
-if _railway_domain:
-    CSRF_TRUSTED_ORIGINS.append(f"https://{_railway_domain}")
+# Railway's internal healthcheck hits the service under this hostname.
+if "healthcheck.railway.app" not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append("healthcheck.railway.app")
 
 # ── Applications ───────────────────────────────────────────────────────────────
 INSTALLED_APPS = [
@@ -100,18 +129,24 @@ WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
 # ── Database ───────────────────────────────────────────────────────────────────
-# Locally:  DATABASE_URL is unset  →  SQLite is used automatically.
-# Railway:  DATABASE_URL is injected automatically by the PostgreSQL plugin
-#           →  PostgreSQL is used automatically. No code change needed.
-DATABASES = {
-    "default": env.db(
-        "DATABASE_URL",
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-    )
-}
-
-# Keeps PostgreSQL connections alive between requests (ignored for SQLite)
-CONN_MAX_AGE = env.int("CONN_MAX_AGE", default=60)
+# DATABASE_URL set      → PostgreSQL (Railway injects this automatically).
+# DATABASE_URL not set  → SQLite (local development fallback).
+DATABASE_URL = env.str("DATABASE_URL", default=None)
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=IS_PRODUCTION,
+        )
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # ── Password validation ────────────────────────────────────────────────────────
 AUTH_PASSWORD_VALIDATORS = [
@@ -166,20 +201,16 @@ REST_FRAMEWORK = {
 }
 
 # ── CORS ───────────────────────────────────────────────────────────────────────
-CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS")
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
 CORS_ALLOW_CREDENTIALS = True
 
-# ── Production security hardening (applied only when DEBUG=False) ──────────────
-if not DEBUG:
+# ── Production security hardening (applied only when IS_PRODUCTION=True) ────────
+if IS_PRODUCTION:
     # Trust the X-Forwarded-Proto header set by Railway's load balancer.
-    # This tells Django a request is HTTPS even though Railway forwards it as HTTP internally.
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-    # SECURE_SSL_REDIRECT is intentionally OFF on Railway.
-    # Railway's healthcheck sends plain HTTP requests to / and expects a 200.
-    # If this were True, Django would return a 301 redirect → healthcheck sees
-    # a redirect instead of 200 → deployment times out and fails.
-    # SSL is already enforced at Railway's load balancer level, so this is safe.
+    # OFF on Railway: the healthcheck sends plain HTTP and expects a 200.
+    # A 301 redirect would fail the healthcheck. SSL is enforced at Railway's edge.
     SECURE_SSL_REDIRECT = False
 
     SECURE_HSTS_SECONDS = 31_536_000   # 1 year
