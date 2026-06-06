@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}BLUS{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            blue: { DEFAULT:'#1A2B6B', md:'#2340A8', lt:'#EEF1FB', dk:'#111D4A' },
+            red:  { DEFAULT:'#E02B20', dk:'#B8221A', lt:'#FDECEA' },
+          },
+          fontFamily: {
+            display: ['Syne','sans-serif'],
+            body:    ['DM Sans','sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Shared auth styles (input-field, btn-primary, animations, hex-bg) live in main.css -->
+  <link rel="stylesheet" href="{% static 'css/main.css' %}"/>
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-blue-lt min-h-screen flex">
+
+  <!-- ══════════ LEFT BRAND PANEL (shared) ══════════ -->
+  <div class="hidden lg:flex lg:w-[45%] bg-blue relative flex-col justify-between overflow-hidden hex-bg">
+    <div class="absolute -top-24 -left-24 w-80 h-80 rounded-full bg-red opacity-20 blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-10 right-10 w-64 h-64 rounded-full bg-blue-md opacity-30 blur-3xl pointer-events-none"></div>
+
+    <!-- Logo -->
+    <div class="relative z-10 p-10">
+      <a href="/" class="flex items-center gap-2.5">
+        <span class="w-9 h-9 rounded-xl bg-red flex items-center justify-center flex-shrink-0">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 5.5V10.5L8 14L2 10.5V5.5L8 2Z" fill="white"/></svg>
+        </span>
+        <span class="font-display font-bold text-white text-xl tracking-tight">BLUS</span>
+      </a>
+    </div>
+
+    <!-- Marketing copy (pages can override) -->
+    <div class="relative z-10 px-10 pb-4">
+      <span class="inline-flex items-center gap-1.5 bg-white/10 text-white/70 text-xs font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full mb-6">
+        <span class="w-1.5 h-1.5 rounded-full bg-red"></span>
+        {% block panel_badge %}BLUS Portal{% endblock %}
+      </span>
+      <h1 class="font-display text-4xl xl:text-5xl font-extrabold text-white leading-[1.1] mb-5">
+        {% block panel_heading %}
+        Beijing Union of<br/>Liberian <span class="text-red">Students</span>
+        {% endblock %}
+      </h1>
+      <p class="text-white/50 text-sm leading-relaxed max-w-xs">
+        {% block panel_text %}
+        Events, support, finances, and community — all in one secure place.
+        {% endblock %}
+      </p>
+    </div>
+
+    <!-- Stats -->
+    <div class="relative z-10 mx-10 mb-10 grid grid-cols-3 gap-3">
+      <div class="border border-white/10 rounded-2xl p-4" style="background:rgba(255,255,255,.06)">
+        <p class="font-display font-bold text-2xl text-white">500<span class="text-red">+</span></p>
+        <p class="text-white/40 text-xs mt-1 uppercase tracking-wider">Students</p>
+      </div>
+      <div class="border border-white/10 rounded-2xl p-4" style="background:rgba(255,255,255,.06)">
+        <p class="font-display font-bold text-2xl text-white">80<span class="text-red">+</span></p>
+        <p class="text-white/40 text-xs mt-1 uppercase tracking-wider">Events</p>
+      </div>
+      <div class="border border-white/10 rounded-2xl p-4" style="background:rgba(255,255,255,.06)">
+        <p class="font-display font-bold text-2xl text-white">12<span class="text-red">+</span></p>
+        <p class="text-white/40 text-xs mt-1 uppercase tracking-wider">Universities</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ RIGHT PANEL (page-specific) ══════════ -->
+  <div class="flex-1 flex items-center justify-center p-6 md:p-12 overflow-y-auto">
+    <div class="w-full max-w-md py-6">
+
+      <!-- Mobile logo (shared) -->
+      <div class="flex items-center gap-2 mb-8 lg:hidden">
+        <span class="w-8 h-8 rounded-lg bg-blue flex items-center justify-center">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 5.5V10.5L8 14L2 10.5V5.5L8 2Z" fill="white"/></svg>
+        </span>
+        <span class="font-display font-bold text-blue text-lg">BLUS</span>
+      </div>
+
+      <!-- Flash messages (shared) -->
+      {% if messages %}
+      {% for msg in messages %}
+      <div class="fade-up d1 mb-5 p-4 {% if msg.tags == 'success' %}bg-green-50 border border-green-200 text-green-700{% else %}bg-red-lt border border-red/20 text-red{% endif %} rounded-xl text-sm font-medium">
+        {{ msg }}
+      </div>
+      {% endfor %}
+      {% endif %}
+
+      {% block auth_main %}{% endblock %}
+    </div>
+  </div>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

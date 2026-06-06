@@ -1,5 +1,8 @@
-from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 
 
-class DashboardView(TemplateView):
-    template_name = "frontend/admin_dashboard.html"
+@login_required
+def student_dashboard_view(request):
+    """Member dashboard for students after they log in."""
+    return render(request, "students/student_dashboard.html")

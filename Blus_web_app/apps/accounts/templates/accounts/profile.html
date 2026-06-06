@@ -1,0 +1,18 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Profile — BLUS Admin{% endblock %}
+{% block nav_settings %}active{% endblock %}
+{% block breadcrumb %}Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl">
+  <h1 class="font-display text-2xl font-bold text-gray-900">Profile</h1>
+  <p class="mt-2 text-sm text-gray-500">
+    Signed in as <span class="font-semibold text-gray-700">{{ request.user.email }}</span>
+    ({{ request.user.get_role_display }}).
+  </p>
+  <div class="mt-6 rounded-2xl border border-gray-100 bg-white p-6 text-sm text-gray-500">
+    Profile editing is coming in a later task.
+  </div>
+</div>
+{% endblock %}

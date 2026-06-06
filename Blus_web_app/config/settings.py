@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     "corsheaders",
     # Project apps
     "apps.accounts",
+    "apps.administration",
     "apps.students",
     "apps.events",
     "apps.finance",
@@ -167,13 +168,23 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# WhiteNoise: serve compressed + cached-forever static files in production
+# Static files storage:
+#   Production → WhiteNoise compressed + hashed (cache-busting) manifest storage.
+#                Requires `collectstatic` and serves fingerprinted filenames.
+#   Development → plain storage: serves files live from /static, no collectstatic,
+#                edits appear on refresh. (Manifest storage in dev forces a
+#                collectstatic after every CSS change — a common "stale CSS" trap.)
+if IS_PRODUCTION:
+    _staticfiles_backend = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+else:
+    _staticfiles_backend = "django.contrib.staticfiles.storage.StaticFilesStorage"
+
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": _staticfiles_backend,
     },
 }
 
@@ -182,8 +193,12 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 # ── Auth ───────────────────────────────────────────────────────────────────────
-LOGIN_REDIRECT_URL = "students:dashboard"
+# Tells Django to use our custom user model everywhere instead of the default.
+AUTH_USER_MODEL = "accounts.User"
+
+LOGIN_REDIRECT_URL = "administration:dashboard"
 LOGOUT_REDIRECT_URL = "accounts:login"
+LOGIN_URL = "accounts:login"
 
 # ── Django REST Framework ──────────────────────────────────────────────────────
 REST_FRAMEWORK = {

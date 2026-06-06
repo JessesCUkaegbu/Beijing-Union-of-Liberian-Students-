@@ -1,14 +1,91 @@
-{% extends "base.html" %}
+{% extends "accounts/auth_base.html" %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Create Account — BLUS{% endblock %}
 
-{% block content %}
-<section class="space-y-4 rounded-lg bg-white p-8 shadow">
-    <h1 class="text-2xl font-bold">Register</h1>
-    <form method="post" class="space-y-4">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="rounded bg-slate-900 px-4 py-2 text-white">Submit</button>
-    </form>
-</section>
+{% block panel_badge %}Join the Community{% endblock %}
+
+{% block panel_heading %}
+Become part of<br/>something <span class="text-red">bigger</span>
+{% endblock %}
+
+{% block panel_text %}
+Create your account to connect with the Beijing Union of Liberian Students — events, support, and community in one place.
+{% endblock %}
+
+{% block auth_main %}
+<div class="fade-up">
+  <h2 class="font-display text-3xl font-bold text-gray-900 mb-1">Create your account</h2>
+  <p class="text-gray-500 text-sm mb-8">It only takes a minute to get started</p>
+</div>
+
+<!-- Form-wide (non-field) errors -->
+{% if form.non_field_errors %}
+<div class="fade-up d1 mb-5 p-4 bg-red-lt border border-red/20 rounded-xl text-sm font-medium text-red">
+  {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+</div>
+{% endif %}
+
+<form method="POST" action="{% url 'accounts:register' %}" class="space-y-4" novalidate>
+  {% csrf_token %}
+
+  <!-- Email -->
+  <div class="field-wrap fade-up d2">
+    <label class="field-label" for="{{ form.email.id_for_label }}">Email</label>
+    {{ form.email }}
+    {% for error in form.email.errors %}
+    <p class="text-red text-xs mt-1.5">{{ error }}</p>
+    {% endfor %}
+  </div>
+
+  <!-- First / Last name -->
+  <div class="grid grid-cols-2 gap-3 fade-up d2">
+    <div class="field-wrap">
+      <label class="field-label" for="{{ form.first_name.id_for_label }}">First name</label>
+      {{ form.first_name }}
+      {% for error in form.first_name.errors %}
+      <p class="text-red text-xs mt-1.5">{{ error }}</p>
+      {% endfor %}
+    </div>
+    <div class="field-wrap">
+      <label class="field-label" for="{{ form.last_name.id_for_label }}">Last name</label>
+      {{ form.last_name }}
+      {% for error in form.last_name.errors %}
+      <p class="text-red text-xs mt-1.5">{{ error }}</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Password -->
+  <div class="field-wrap fade-up d3">
+    <label class="field-label" for="{{ form.password1.id_for_label }}">Password</label>
+    {{ form.password1 }}
+    {% for error in form.password1.errors %}
+    <p class="text-red text-xs mt-1.5">{{ error }}</p>
+    {% endfor %}
+  </div>
+
+  <!-- Confirm password -->
+  <div class="field-wrap fade-up d3">
+    <label class="field-label" for="{{ form.password2.id_for_label }}">Confirm password</label>
+    {{ form.password2 }}
+    {% for error in form.password2.errors %}
+    <p class="text-red text-xs mt-1.5">{{ error }}</p>
+    {% endfor %}
+  </div>
+
+  <div class="fade-up d4 pt-1">
+    <button type="submit" class="btn-primary">
+      Create Account
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</form>
+
+<p class="text-center text-sm text-gray-500 mt-8 fade-up d5">
+  Already have an account?
+  <a href="{% url 'accounts:login' %}" class="text-blue-md hover:text-red transition-colors font-semibold">Sign in</a>
+</p>
+<p class="text-center text-xs text-gray-400 mt-3 fade-up d5">
+  <a href="/" class="text-blue-md hover:text-red transition-colors font-medium">← Back to public site</a>
+</p>
 {% endblock %}

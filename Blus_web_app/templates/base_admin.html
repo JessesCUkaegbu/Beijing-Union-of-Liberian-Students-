@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{% block title %} Admin — StudentHub {% endblock %}</title>
+  <title>{% block title %} Dashboard — BLUS {% endblock %}</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -120,23 +120,26 @@
       <span class="w-8 h-8 rounded-lg bg-red flex items-center justify-center flex-shrink-0">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 5.5V10.5L8 14L2 10.5V5.5L8 2Z" fill="white"/></svg>
       </span>
-      <span class="logo-text font-display font-bold text-white text-base tracking-tight">StudentHub</span>
+      <span class="logo-text font-display font-bold text-white text-base tracking-tight">BLUS</span>
     </div>
 
     <!-- Store selector -->
     <div class="store-row mx-3 mb-3 flex items-center gap-2 bg-white/8 rounded-xl p-2.5 cursor-pointer hover:bg-white/12 transition-colors" style="background:rgba(255,255,255,.07)">
+      {% block sidebar_brand %}
       <span class="w-7 h-7 rounded-lg bg-blue-md flex items-center justify-center text-xs font-bold text-white flex-shrink-0">A</span>
       <div class="flex-1 min-w-0">
         <p class="text-white text-xs font-semibold truncate">Admin Panel</p>
-        <p class="text-white/40 text-xs truncate">studenthub.org</p>
+        <p class="text-white/40 text-xs truncate">blus.org</p>
       </div>
+      {% endblock %}
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5l3 3 3-3" stroke="rgba(255,255,255,.4)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
 
     <!-- Nav -->
     <nav class="flex-1 overflow-y-auto px-2 pb-2 space-y-0.5">
+      {% block sidebar_nav %}
       <p class="nav-section">General</p>
-      <a href="{% url 'students:dashboard' %}" class="nav-item {% block nav_dash %}{% endblock %}">
+      <a href="{% url 'administration:dashboard' %}" class="nav-item {% block nav_dash %}{% endblock %}">
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="1.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="8.5" y="1.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="1.5" y="8.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="8.5" y="8.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/></svg>
         <span class="nav-label">Dashboard</span>
       </a>
@@ -178,16 +181,17 @@
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M7.5 1v2M7.5 12v2M1 7.5h2M12 7.5h2M2.9 2.9l1.42 1.42M10.68 10.68l1.42 1.42M2.9 12.1l1.42-1.42M10.68 4.32l1.42-1.42" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         <span class="nav-label">Settings</span>
       </a>
+      {% endblock %}
     </nav>
 
     <!-- User footer -->
     <div class="flex-shrink-0 border-t border-white/10 p-3">
       <div class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-full bg-red flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-          {{ request.user.username|first|upper }}
+          {{ request.user.email|first|upper }}
         </div>
         <div class="user-name flex-1 min-w-0">
-          <p class="text-white text-xs font-semibold truncate">{{ request.user.username }}</p>
+          <p class="text-white text-xs font-semibold truncate">{{ request.user.get_full_name|default:request.user.email }}</p>
           <p class="text-white/40 text-xs truncate">{{ request.user.email }}</p>
         </div>
         <a href="{% url 'accounts:logout' %}" class="user-name text-white/30 hover:text-white/70 transition-colors flex-shrink-0" title="Log out">
@@ -236,7 +240,7 @@
         </button>
         <!-- Avatar -->
         <div class="w-8 h-8 rounded-full bg-blue flex items-center justify-center text-white text-xs font-bold cursor-pointer">
-          {{ request.user.username|first|upper }}
+          {{ request.user.email|first|upper }}
         </div>
       </div>
     </header>
