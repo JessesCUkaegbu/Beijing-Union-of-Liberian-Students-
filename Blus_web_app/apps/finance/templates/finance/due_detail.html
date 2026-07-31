@@ -1,0 +1,56 @@
+{% extends "base_admin.html" %}
+
+{% block title %}{{ due.title }} — BLUS{% endblock %}
+{% block breadcrumb %}Due detail{% endblock %}
+{% block nav_dues %} active {% endblock %}
+
+{% block admin_content %}
+<div class="max-w-2xl">
+  <a href="{% url 'finance:due_list' %}" class="text-sm text-gray-500 hover:text-red transition-colors font-medium">← Back to dues</a>
+
+  <section class="stat-card mt-4">
+    <div class="flex items-center gap-3 mb-2">
+      <h1 class="font-display text-2xl font-bold text-gray-900">{{ due.title }}</h1>
+      {% if due.is_paid %}
+      <span class="pill-active">Paid</span>
+      {% elif due.is_overdue %}
+      <span class="pill-error">Overdue</span>
+      {% else %}
+      <span class="pill-pending">Unpaid</span>
+      {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm mt-4">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Student</p>
+        <p class="text-gray-800 mt-0.5">
+          <a href="{% url 'students:detail' due.student.pk %}" class="hover:text-red transition-colors">{{ due.student.full_name }}</a>
+        </p>
+      </div>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Amount</p>
+        <p class="text-gray-800 mt-0.5">${{ due.amount }}</p>
+      </div>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Due date</p>
+        <p class="text-gray-800 mt-0.5">{{ due.due_date|date:"F j, Y" }}</p>
+      </div>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Paid date</p>
+        <p class="text-gray-800 mt-0.5">{{ due.paid_date|default:"—" }}</p>
+      </div>
+    </div>
+
+    {% if due.notes %}
+    <div class="mt-5 pt-5 border-t border-gray-100">
+      <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Notes</p>
+      <p class="text-gray-700 text-sm leading-relaxed mt-1.5 whitespace-pre-line">{{ due.notes }}</p>
+    </div>
+    {% endif %}
+
+    <div class="mt-6 pt-5 border-t border-gray-100">
+      <a href="{% url 'finance:due_edit' due.pk %}" class="text-sm font-semibold text-blue-md hover:text-red transition-colors">Edit this due →</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

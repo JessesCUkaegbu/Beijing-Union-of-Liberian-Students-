@@ -195,37 +195,35 @@
         </thead>
         <tbody id="student-table-body">
           {% for student in recent_students %}
-          <tr data-status="{{ student.status }}">
+          <tr data-status="{% if student.is_active %}active{% else %}inactive{% endif %}">
             <td>
               <div class="flex items-center gap-3">
                 <div class="flex h-8 w-8 items-center justify-center rounded-full border border-blue/10 bg-blue-lt text-xs font-bold text-blue">
-                  {{ student.first_name|first }}{{ student.last_name|first }}
+                  {% if student.user.first_name %}{{ student.user.first_name|first|upper }}{{ student.user.last_name|first|upper }}{% else %}{{ student.user.email|first|upper }}{% endif %}
                 </div>
                 <div>
-                  <p class="text-sm font-medium text-gray-800">{{ student.first_name }} {{ student.last_name }}</p>
-                  <p class="text-xs text-gray-400">{{ student.email }}</p>
+                  <p class="text-sm font-medium text-gray-800">{{ student.full_name }}</p>
+                  <p class="text-xs text-gray-400">{{ student.user.email }}</p>
                 </div>
               </div>
             </td>
-            <td class="max-w-[140px] truncate text-gray-600">{{ student.course }}</td>
+            <td class="max-w-[140px] truncate text-gray-600">{{ student.course|default:"—" }}</td>
             <td>
-              <span class="rounded-full bg-blue-lt px-2 py-0.5 text-xs font-medium text-blue">{{ student.role }}</span>
+              <span class="rounded-full bg-blue-lt px-2 py-0.5 text-xs font-medium text-blue">Student</span>
             </td>
             <td>
-              {% if student.status == 'active' %}
+              {% if student.is_active %}
               <span class="pill-active">Active</span>
-              {% elif student.status == 'inactive' %}
-              <span class="pill-inactive">Inactive</span>
               {% else %}
-              <span class="pill-pending">Pending</span>
+              <span class="pill-inactive">Inactive</span>
               {% endif %}
             </td>
             <td>
               <div class="flex items-center gap-1">
-                <a href="{% url 'students:detail' student.id %}" class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-100 bg-gray-50 text-gray-400 transition-colors hover:bg-blue-lt hover:text-blue">
+                <a href="{% url 'students:detail' student.pk %}" class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-100 bg-gray-50 text-gray-400 transition-colors hover:bg-blue-lt hover:text-blue">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6C2.5 3.5 4 2 6 2s3.5 1.5 5 4c-1.5 2.5-3 4-5 4S2.5 8.5 1 6z" stroke="currentColor" stroke-width="1.2"/><circle cx="6" cy="6" r="1.5" stroke="currentColor" stroke-width="1.2"/></svg>
                 </a>
-                <a href="{% url 'students:edit' student.id %}" class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-100 bg-gray-50 text-gray-400 transition-colors hover:bg-blue-lt hover:text-blue">
+                <a href="{% url 'students:edit' student.pk %}" class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-100 bg-gray-50 text-gray-400 transition-colors hover:bg-blue-lt hover:text-blue">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8.5 1.5l2 2L4 10H2V8L8.5 1.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </a>
               </div>

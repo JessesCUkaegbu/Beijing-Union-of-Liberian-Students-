@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from django_ratelimit.decorators import ratelimit
 
 from .forms import LoginForm, RegistrationForm
 
@@ -33,6 +34,8 @@ PORTAL_COPY = {
 }
 
 
+@ratelimit(key="ip", rate="20/5m", method="POST", block=False)
+@ratelimit(key="post:username", rate="5/5m", method="POST", block=False)
 def login_view(request):
     """Shared email + password login. Heading adapts to the chosen ?as= portal."""
     if request.user.is_authenticated:
@@ -42,7 +45,7 @@ def login_view(request):
     badge, heading, subtitle = PORTAL_COPY.get(portal, PORTAL_COPY[""])
     form = LoginForm(request, data=request.POST or None)
 
-    if request.method == "POST" and form.is_valid():
+    if request.method == "POST" and not request.limited and form.is_valid():
         user = form.get_user()
         login(request, user)
         messages.success(request, "Welcome back!")
@@ -58,6 +61,8 @@ def login_view(request):
     })
 
 
+@ratelimit(key="ip", rate="10/h", method="POST", block=False)
+@ratelimit(key="post:email", rate="3/h", method="POST", block=False)
 def register_view(request):
     """Public sign-up — students only. Admins are provisioned by a superuser."""
     if request.user.is_authenticated:
@@ -65,10 +70,13 @@ def register_view(request):
 
     form = RegistrationForm(request.POST or None)
 
-    if request.method == "POST" and form.is_valid():
-        form.save()   # hashes password + saves; role defaults to 'student'
-        messages.success(request, "Account created successfully. Please log in.")
-        return redirect("accounts:login")
+    if request.method == "POST":
+        if request.limited:
+            form.add_error(None, "Too many sign-up attempts from this device. Please try again later.")
+        elif form.is_valid():
+            form.save()   # hashes password + saves; role defaults to 'student'
+            messages.success(request, "Account created successfully. Please log in.")
+            return redirect("accounts:login")
 
     return render(request, "accounts/register.html", {"form": form})
 

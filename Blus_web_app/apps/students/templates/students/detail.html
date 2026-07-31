@@ -1,13 +1,122 @@
 {% extends "base_admin.html" %}
 
-{% block title %}Student Detail{% endblock %}
+{% block title %}{{ profile.full_name }} — BLUS{% endblock %}
+{% block breadcrumb %}Student detail{% endblock %}
+{% block nav_students %} active {% endblock %}
 
 {% block admin_content %}
-<section class="rounded-lg bg-white p-6 shadow">
-    <h1 class="text-2xl font-bold">{{ student.full_name }}</h1>
-    <p>Student ID: {{ student.student_id }}</p>
-    <p>Email: {{ student.email }}</p>
-    <p>Course: {{ student.course }}</p>
-    <a href="{% url 'students:edit' student.pk %}" class="mt-4 inline-block rounded bg-slate-900 px-4 py-2 text-white">Edit</a>
+<a href="{% url 'students:list' %}" class="text-sm text-gray-500 hover:text-red transition-colors font-medium">← Back to students</a>
+
+<section class="stat-card mt-4">
+  <div class="flex items-center gap-4 mb-5">
+    {% if profile.image %}
+    <img src="{{ profile.image.url }}" alt="{{ profile.full_name }}" class="w-16 h-16 object-cover rounded-full"/>
+    {% else %}
+    <div class="flex h-16 w-16 items-center justify-center rounded-full border border-blue/10 bg-blue-lt text-xl font-bold text-blue">
+      {{ profile.user.first_name|first|default:profile.user.email|first|upper }}
+    </div>
+    {% endif %}
+    <div>
+      <div class="flex items-center gap-3">
+        <h1 class="font-display text-2xl font-bold text-gray-900">{{ profile.full_name }}</h1>
+        {% if profile.is_active %}
+        <span class="pill-active">Registered member</span>
+        {% else %}
+        <span class="pill-inactive">Not registered</span>
+        {% endif %}
+      </div>
+      <p class="text-gray-500 text-sm mt-1">{{ profile.user.email }}</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div>
+      <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Personal</p>
+      <div class="space-y-3 text-sm">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Student ID</p>
+          <p class="text-gray-800 mt-0.5">{{ profile.student_id }}</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Gender</p>
+          <p class="text-gray-800 mt-0.5">{{ profile.get_gender_display|default:"—" }}</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Date of birth</p>
+          <p class="text-gray-800 mt-0.5">{{ profile.date_of_birth|default:"—" }}</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">WeChat ID</p>
+          <p class="text-gray-800 mt-0.5">{{ profile.wechat_id|default:"—" }}</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Phone</p>
+          <p class="text-gray-800 mt-0.5">{{ profile.phone_number|default:"—" }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Academic &amp; residence</p>
+      <div class="space-y-3 text-sm">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">University</p>
+          <p class="text-gray-800 mt-0.5">{{ profile.university|default:"—" }}</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Degree level</p>
+          <p class="text-gray-800 mt-0.5">{{ profile.get_degree_level_display|default:"—" }}</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Field of study</p>
+          <p class="text-gray-800 mt-0.5">{{ profile.course|default:"—" }}</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Year of study</p>
+          <p class="text-gray-800 mt-0.5">{{ profile.get_year_of_study_display|default:"—" }}</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Expected graduation</p>
+          <p class="text-gray-800 mt-0.5">{{ profile.expected_graduation_year|default:"—" }}</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Sponsorship</p>
+          <p class="text-gray-800 mt-0.5">{{ profile.get_sponsorship_status_display|default:"—" }}</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Residence</p>
+          <p class="text-gray-800 mt-0.5">{{ profile.residence_area|default:"—" }}{% if profile.housing_type %} · {{ profile.get_housing_type_display }}{% endif %}</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">BULS engagement</p>
+      <div class="space-y-3 text-sm">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Interested activities</p>
+          <p class="text-gray-800 mt-0.5">
+            {% if profile.activity_interests_display %}{{ profile.activity_interests_display|join:", " }}{% else %}—{% endif %}
+          </p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Challenges</p>
+          <p class="text-gray-800 mt-0.5 whitespace-pre-line">{{ profile.challenges|default:"—" }}</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Suggestions</p>
+          <p class="text-gray-800 mt-0.5 whitespace-pre-line">{{ profile.suggestions|default:"—" }}</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Member since</p>
+          <p class="text-gray-800 mt-0.5">{{ profile.created_at|date:"F j, Y" }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-6 pt-5 border-t border-gray-100">
+    <a href="{% url 'students:edit' profile.pk %}" class="text-sm font-semibold text-blue-md hover:text-red transition-colors">Edit this student →</a>
+  </div>
 </section>
 {% endblock %}

@@ -1,14 +1,78 @@
 {% extends "base_admin.html" %}
 
-{% block title %}Add Post{% endblock %}
+{% block title %}{% if post %}Edit Post{% else %}Add Post{% endif %} — BLUS{% endblock %}
+{% block breadcrumb %}{% if post %}Edit Post{% else %}Add Post{% endif %}{% endblock %}
+{% block nav_blog %} active {% endblock %}
 
 {% block admin_content %}
-<section class="rounded-lg bg-white p-6 shadow">
-    <h1 class="mb-4 text-2xl font-bold">Add Post</h1>
-    <form method="post" class="space-y-4">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="rounded bg-slate-900 px-4 py-2 text-white">Publish</button>
+<div class="max-w-2xl">
+  <div class="mb-6 flex items-center gap-3">
+    <div>
+      <h1 class="font-display text-2xl font-bold text-gray-900">{% if post %}Edit Post{% else %}Add Post{% endif %}</h1>
+      <p class="text-gray-500 text-sm mt-1">
+        {% if post %}Update "{{ post.title }}".{% else %}Write a new post for the BLUS blog.{% endif %}
+      </p>
+    </div>
+    {% if post %}
+      {% if post.is_published %}
+      <span class="pill-active">Published</span>
+      {% else %}
+      <span class="pill-pending">Draft</span>
+      {% endif %}
+    {% endif %}
+  </div>
+
+  <section class="stat-card">
+    <form method="post" enctype="multipart/form-data" class="space-y-5">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div class="p-4 bg-red-lt border border-red/20 rounded-xl text-sm font-medium text-red">
+        {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.title.id_for_label }}">Post title</label>
+        {{ form.title }}
+        {% for error in form.title.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.excerpt.id_for_label }}">Short summary</label>
+        {{ form.excerpt }}
+        <p class="text-gray-400 text-xs mt-1.5">Optional. Shown on the blog card — falls back to the start of your post if left blank.</p>
+        {% for error in form.excerpt.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.body.id_for_label }}">Post body</label>
+        {{ form.body }}
+        {% for error in form.body.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.cover_image.id_for_label }}">Cover image</label>
+        {% if post.cover_image %}
+        <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="w-full h-32 object-cover rounded-xl mb-2"/>
+        {% endif %}
+        {{ form.cover_image }}
+        <p class="text-gray-400 text-xs mt-1.5">
+          {% if post %}Optional. Leave blank to keep the current image.{% else %}Optional. Shown on the blog card and post page.{% endif %}
+        </p>
+        {% for error in form.cover_image.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="flex items-center gap-3 pt-2">
+        <button type="submit" name="action" value="publish" class="btn-primary" style="width:auto; padding-left:2rem; padding-right:2rem;">
+          Publish
+        </button>
+        <button type="submit" name="action" value="draft" class="rounded-xl border border-gray-200 px-6 py-3.5 text-sm font-semibold text-gray-600 transition-colors hover:bg-gray-50">
+          Save as draft
+        </button>
+        <a href="{% url 'blog:list' %}" class="text-sm text-gray-500 hover:text-red transition-colors font-medium">Cancel</a>
+      </div>
     </form>
-</section>
+  </section>
+</div>
 {% endblock %}

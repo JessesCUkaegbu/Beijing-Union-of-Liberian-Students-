@@ -25,9 +25,14 @@ django-cors-headers==4.9.0
 
 # Auth
 PyJWT==2.12.1
+django-ratelimit==4.1.0     # brute-force/signup-abuse throttling on login & register
 
 # Images
 Pillow==12.2.0
+
+# Media storage (optional — falls back to local disk if unconfigured, see .env.example)
+django-storages==1.14.6
+boto3==1.43.59
 
 # Utilities
 sqlparse==0.5.5

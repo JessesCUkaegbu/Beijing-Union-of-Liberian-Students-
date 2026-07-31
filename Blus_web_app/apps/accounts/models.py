@@ -7,7 +7,6 @@ class UserManager(BaseUserManager):
     Custom manager because our User logs in with EMAIL, not username.
     Django's default manager assumes a `username` argument, so we replace it.
     """
-
     use_in_migrations = True
 
     def _create_user(self, email, password, **extra_fields):

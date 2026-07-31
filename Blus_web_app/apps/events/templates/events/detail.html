@@ -1,12 +1,31 @@
-{% extends "base.html" %}
+{% extends "base_admin.html" %}
 
-{% block title %}Event Detail{% endblock %}
+{% block title %}{{ event.title }} — BLUS{% endblock %}
+{% block breadcrumb %}Event detail{% endblock %}
+{% block nav_events %} active {% endblock %}
 
-{% block content %}
-<section class="rounded-lg bg-white p-6 shadow">
-    <h1 class="text-2xl font-bold">{{ event.title }}</h1>
-    <p>{{ event.location }}</p>
-    <p>{{ event.event_date }}</p>
-    <p>{{ event.description }}</p>
-</section>
+{% block admin_content %}
+<div class="max-w-2xl">
+  <a href="{% url 'events:list' %}" class="text-sm text-gray-500 hover:text-red transition-colors font-medium">← Back to events</a>
+
+  <section class="stat-card mt-4">
+    {% if event.image %}
+    <img src="{{ event.image.url }}" alt="{{ event.title }}" class="w-full h-48 object-cover rounded-xl mb-5"/>
+    {% endif %}
+
+    <h1 class="font-display text-2xl font-bold text-gray-900">{{ event.title }}</h1>
+
+    <div class="flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-500 mt-2">
+      <span>{{ event.event_date }}</span>
+      {% if event.start_time %}
+      <span>{{ event.start_time }}{% if event.end_time %} – {{ event.end_time }}{% endif %}</span>
+      {% endif %}
+      {% if event.location %}<span>{{ event.location }}</span>{% endif %}
+    </div>
+
+    {% if event.description %}
+    <p class="text-gray-700 text-sm leading-relaxed mt-5 whitespace-pre-line">{{ event.description }}</p>
+    {% endif %}
+  </section>
+</div>
 {% endblock %}

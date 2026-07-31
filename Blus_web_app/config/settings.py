@@ -71,6 +71,7 @@ if "healthcheck.railway.app" not in ALLOWED_HOSTS:
 
 # ── Applications ───────────────────────────────────────────────────────────────
 INSTALLED_APPS = [
+    "jazzmin",  # must be before django.contrib.admin
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -179,9 +180,27 @@ if IS_PRODUCTION:
 else:
     _staticfiles_backend = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
+# Media storage: local disk by default (fine for local dev). If
+# AWS_STORAGE_BUCKET_NAME is set, switch to S3Storage — required in production
+# because Railway's filesystem is ephemeral and uploads are lost on every
+# redeploy otherwise. Works with real AWS S3 or any S3-compatible provider
+# (Cloudflare R2, Backblaze B2, etc. — set AWS_S3_ENDPOINT_URL for those).
+AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", default="")
+
+if AWS_STORAGE_BUCKET_NAME:
+    _default_storage_backend = "storages.backends.s3.S3Storage"
+    AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", default="")
+    AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY", default="")
+    AWS_S3_REGION_NAME = env.str("AWS_S3_REGION_NAME", default="auto")
+    AWS_S3_ENDPOINT_URL = env.str("AWS_S3_ENDPOINT_URL", default=None)  # unset for real AWS S3
+    AWS_S3_FILE_OVERWRITE = False   # preserve Django's automatic filename de-duplication
+    AWS_QUERYSTRING_AUTH = False    # plain URLs — media is public today, no signed links
+else:
+    _default_storage_backend = "django.core.files.storage.FileSystemStorage"
+
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": _default_storage_backend,
     },
     "staticfiles": {
         "BACKEND": _staticfiles_backend,
@@ -189,6 +208,7 @@ STORAGES = {
 }
 
 # ── Media files ────────────────────────────────────────────────────────────────
+# Still used by the local-disk fallback above; harmless when S3Storage is active.
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
@@ -218,6 +238,46 @@ REST_FRAMEWORK = {
 # ── CORS ───────────────────────────────────────────────────────────────────────
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
 CORS_ALLOW_CREDENTIALS = True
+
+# ── Logging ────────────────────────────────────────────────────────────────────
+# Railway captures stdout, so a console handler is sufficient — no file handler.
+LOG_LEVEL = env.str("LOG_LEVEL", default="DEBUG" if DEBUG else "INFO")
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {"format": "{asctime} {levelname} {name} {message}", "style": "{"},
+        "simple": {"format": "{levelname} {name} {message}", "style": "{"},
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose" if DEBUG else "simple",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": LOG_LEVEL,
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": LOG_LEVEL,
+            "propagate": False,
+        },
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",   # 5xx / unhandled exceptions only — suppresses routine 4xx noise
+            "propagate": False,
+        },
+        "django.security": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+    },
+}
 
 # ── Production security hardening (applied only when IS_PRODUCTION=True) ────────
 if IS_PRODUCTION:

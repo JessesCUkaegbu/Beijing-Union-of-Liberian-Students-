@@ -1,0 +1,85 @@
+{% extends "base_admin.html" %}
+
+{% block title %}{% if loan %}Edit Loan{% else %}Add Loan{% endif %} — BLUS{% endblock %}
+{% block breadcrumb %}{% if loan %}Edit Loan{% else %}Add Loan{% endif %}{% endblock %}
+{% block nav_loans %} active {% endblock %}
+
+{% block admin_content %}
+<div class="max-w-2xl">
+  <div class="mb-6">
+    <h1 class="font-display text-2xl font-bold text-gray-900">{% if loan %}Edit Loan{% else %}Add Loan{% endif %}</h1>
+    <p class="text-gray-500 text-sm mt-1">
+      {% if loan %}Update this student loan record.{% else %}Record a new loan issued to a student.{% endif %}
+    </p>
+  </div>
+
+  <section class="stat-card">
+    <form method="post" class="space-y-5">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div class="p-4 bg-red-lt border border-red/20 rounded-xl text-sm font-medium text-red">
+        {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.student.id_for_label }}">Student</label>
+        {{ form.student }}
+        {% for error in form.student.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.purpose.id_for_label }}">Purpose</label>
+        {{ form.purpose }}
+        {% for error in form.purpose.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="field-wrap">
+          <label class="field-label" for="{{ form.amount.id_for_label }}">Loan amount ($)</label>
+          {{ form.amount }}
+          {% for error in form.amount.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" for="{{ form.amount_repaid.id_for_label }}">Amount repaid ($)</label>
+          {{ form.amount_repaid }}
+          {% for error in form.amount_repaid.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="field-wrap">
+          <label class="field-label" for="{{ form.issued_date.id_for_label }}">Issued date</label>
+          {{ form.issued_date }}
+          {% for error in form.issued_date.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" for="{{ form.due_date.id_for_label }}">Repayment due date</label>
+          {{ form.due_date }}
+          {% for error in form.due_date.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+        </div>
+      </div>
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.status.id_for_label }}">Status</label>
+        {{ form.status }}
+        {% for error in form.status.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.notes.id_for_label }}">Notes</label>
+        {{ form.notes }}
+        {% for error in form.notes.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="flex items-center gap-3 pt-2">
+        <button type="submit" class="btn-primary" style="width:auto; padding-left:2rem; padding-right:2rem;">
+          {% if loan %}Save changes{% else %}Save loan{% endif %}
+        </button>
+        <a href="{% url 'finance:loan_list' %}" class="text-sm text-gray-500 hover:text-red transition-colors font-medium">Cancel</a>
+      </div>
+    </form>
+  </section>
+</div>
+{% endblock %}

@@ -1,14 +1,144 @@
 {% extends "base_admin.html" %}
 
-{% block title %}Loan List{% endblock %}
+{% block title %}Student Loans — BLUS{% endblock %}
+{% block breadcrumb %}Student Loans{% endblock %}
+{% block nav_loans %} active {% endblock %}
 
 {% block admin_content %}
-<section class="rounded-lg bg-white p-6 shadow">
-    <h1 class="mb-4 text-2xl font-bold">Loan List</h1>
-    {% for loan in loans %}
-        <p>{{ loan.borrower_name }} - {{ loan.amount }} - {{ loan.issued_at }}</p>
-    {% empty %}
-        <p>No loans recorded.</p>
-    {% endfor %}
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="font-display text-2xl font-bold text-gray-900">Student Loans</h1>
+    <p class="text-gray-500 text-sm mt-1">All loans issued to BLUS students.</p>
+  </div>
+  <a href="{% url 'finance:loan_add' %}" class="btn-primary" style="width:auto; padding-left:1.5rem; padding-right:1.5rem;">
+    Add loan
+  </a>
+</div>
+
+<section class="stat-card !p-0 overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Loan</th>
+          <th>Student</th>
+          <th>Amount</th>
+          <th>Balance</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for loan in page_obj %}
+        <tr>
+          <td>
+            <a href="{% url 'finance:loan_detail' loan.pk %}" class="font-medium text-gray-900 hover:text-red transition-colors">
+              {{ loan.purpose }}
+            </a>
+          </td>
+          <td>{{ loan.student.full_name }}</td>
+          <td>${{ loan.amount }}</td>
+          <td>${{ loan.balance_remaining }}</td>
+          <td>
+            {% if loan.status == 'repaid' %}
+            <span class="pill-active">Repaid</span>
+            {% elif loan.is_overdue %}
+            <span class="pill-error">Overdue</span>
+            {% elif loan.status == 'defaulted' %}
+            <span class="pill-error">Defaulted</span>
+            {% else %}
+            <span class="pill-pending">Active</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="flex items-center gap-1">
+              <button type="button" title="View" class="loan-view-btn flex h-7 w-7 items-center justify-center rounded-lg border border-gray-100 bg-gray-50 text-gray-400 transition-colors hover:bg-blue-lt hover:text-blue"
+                data-title="{{ loan.purpose }}"
+                data-meta="Student: {{ loan.student.full_name }}|Amount: ${{ loan.amount }}|Repaid: ${{ loan.amount_repaid }}|Balance: ${{ loan.balance_remaining }}"
+                data-description="Issued {{ loan.issued_date|date:'F j, Y' }}{% if loan.due_date %} · Due {{ loan.due_date|date:'F j, Y' }}{% endif %}{% if loan.notes %}
+Notes: {{ loan.notes }}{% endif %}">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6C2.5 3.5 4 2 6 2s3.5 1.5 5 4c-1.5 2.5-3 4-5 4S2.5 8.5 1 6z" stroke="currentColor" stroke-width="1.2"/><circle cx="6" cy="6" r="1.5" stroke="currentColor" stroke-width="1.2"/></svg>
+              </button>
+              <a href="{% url 'finance:loan_edit' loan.pk %}" title="Edit"
+                class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-100 bg-gray-50 text-gray-400 transition-colors hover:bg-blue-lt hover:text-blue">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8.5 1.5l2 2L4 10H2V8L8.5 1.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+              <form method="post" action="{% url 'finance:loan_delete' loan.pk %}"
+                data-confirm="Delete &quot;{{ loan.purpose }}&quot;? This can't be undone.">
+                {% csrf_token %}
+                <button type="submit" title="Delete"
+                  class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-100 bg-gray-50 text-gray-400 transition-colors hover:bg-red-lt hover:text-red">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 3.5h7M4.5 3.5v-1a1 1 0 011-1h1a1 1 0 011 1v1M4.5 3.5l.4 6.5h2.2l.4-6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" class="py-8 text-center text-sm text-gray-400">No loans recorded yet — add your first one.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex items-center justify-between border-t border-gray-100 px-6 py-3.5">
+    <p class="text-xs text-gray-400">
+      Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ page_obj.paginator.count }} loan{{ page_obj.paginator.count|pluralize }}
+    </p>
+    {% if page_obj.paginator.num_pages > 1 %}
+    <div class="flex items-center gap-1">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}"
+        class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-gray-400 transition-colors hover:bg-gray-50">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M7.5 9.5L3 5.5l4.5-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      {% else %}
+      <span class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-100 text-gray-200 cursor-not-allowed">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M7.5 9.5L3 5.5l4.5-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+        <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-blue text-xs font-medium text-white">{{ num }}</span>
+        {% else %}
+        <a href="?page={{ num }}"
+          class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-xs font-medium text-gray-500 transition-colors hover:bg-gray-50">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}"
+        class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-gray-400 transition-colors hover:bg-gray-50">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M3.5 9.5L8 5.5 3.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      {% else %}
+      <span class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-100 text-gray-200 cursor-not-allowed">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M3.5 9.5L8 5.5 3.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
 </section>
+
+<!-- Loan view modal (opened by the eye icon above) -->
+<div id="loan-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4" aria-hidden="true">
+  <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
+    <div class="mb-4 flex items-start justify-between gap-4">
+      <h3 data-modal-title class="font-display text-xl font-bold text-gray-900"></h3>
+      <button type="button" data-modal-close class="flex-shrink-0 text-gray-400 transition-colors hover:text-gray-700">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <img data-modal-image class="mb-4 hidden h-40 w-full rounded-xl object-cover" alt=""/>
+    <div data-modal-meta class="mb-4 flex flex-wrap gap-x-5 gap-y-1 text-sm text-gray-500"></div>
+    <p data-modal-description class="whitespace-pre-line text-sm leading-relaxed text-gray-700"></p>
+    <div class="mt-6 flex justify-end">
+      <button type="button" data-modal-close class="text-sm font-medium text-gray-500 transition-colors hover:text-red">Close</button>
+    </div>
+  </div>
+</div>
 {% endblock %}

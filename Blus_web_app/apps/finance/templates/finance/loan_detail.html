@@ -1,0 +1,66 @@
+{% extends "base_admin.html" %}
+
+{% block title %}{{ loan.purpose }} — BLUS{% endblock %}
+{% block breadcrumb %}Loan detail{% endblock %}
+{% block nav_loans %} active {% endblock %}
+
+{% block admin_content %}
+<div class="max-w-2xl">
+  <a href="{% url 'finance:loan_list' %}" class="text-sm text-gray-500 hover:text-red transition-colors font-medium">← Back to loans</a>
+
+  <section class="stat-card mt-4">
+    <div class="flex items-center gap-3 mb-2">
+      <h1 class="font-display text-2xl font-bold text-gray-900">{{ loan.purpose }}</h1>
+      {% if loan.status == 'repaid' %}
+      <span class="pill-active">Repaid</span>
+      {% elif loan.is_overdue %}
+      <span class="pill-error">Overdue</span>
+      {% elif loan.status == 'defaulted' %}
+      <span class="pill-error">Defaulted</span>
+      {% else %}
+      <span class="pill-pending">Active</span>
+      {% endif %}
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm mt-4">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Student</p>
+        <p class="text-gray-800 mt-0.5">
+          <a href="{% url 'students:detail' loan.student.pk %}" class="hover:text-red transition-colors">{{ loan.student.full_name }}</a>
+        </p>
+      </div>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Loan amount</p>
+        <p class="text-gray-800 mt-0.5">${{ loan.amount }}</p>
+      </div>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Amount repaid</p>
+        <p class="text-gray-800 mt-0.5">${{ loan.amount_repaid }}</p>
+      </div>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Balance remaining</p>
+        <p class="text-gray-800 mt-0.5">${{ loan.balance_remaining }}</p>
+      </div>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Issued date</p>
+        <p class="text-gray-800 mt-0.5">{{ loan.issued_date|date:"F j, Y" }}</p>
+      </div>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Repayment due date</p>
+        <p class="text-gray-800 mt-0.5">{{ loan.due_date|default:"—" }}</p>
+      </div>
+    </div>
+
+    {% if loan.notes %}
+    <div class="mt-5 pt-5 border-t border-gray-100">
+      <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">Notes</p>
+      <p class="text-gray-700 text-sm leading-relaxed mt-1.5 whitespace-pre-line">{{ loan.notes }}</p>
+    </div>
+    {% endif %}
+
+    <div class="mt-6 pt-5 border-t border-gray-100">
+      <a href="{% url 'finance:loan_edit' loan.pk %}" class="text-sm font-semibold text-blue-md hover:text-red transition-colors">Edit this loan →</a>
+    </div>
+  </section>
+</div>
+{% endblock %}

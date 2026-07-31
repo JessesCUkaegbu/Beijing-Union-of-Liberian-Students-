@@ -1,0 +1,79 @@
+{% extends "base_admin.html" %}
+
+{% block title %}{% if due %}Edit Due{% else %}Add Due{% endif %} — BLUS{% endblock %}
+{% block breadcrumb %}{% if due %}Edit Due{% else %}Add Due{% endif %}{% endblock %}
+{% block nav_dues %} active {% endblock %}
+
+{% block admin_content %}
+<div class="max-w-2xl">
+  <div class="mb-6">
+    <h1 class="font-display text-2xl font-bold text-gray-900">{% if due %}Edit Due{% else %}Add Due{% endif %}</h1>
+    <p class="text-gray-500 text-sm mt-1">
+      {% if due %}Update this due payment record.{% else %}Record a new due payment owed by a student.{% endif %}
+    </p>
+  </div>
+
+  <section class="stat-card">
+    <form method="post" class="space-y-5">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div class="p-4 bg-red-lt border border-red/20 rounded-xl text-sm font-medium text-red">
+        {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.student.id_for_label }}">Student</label>
+        {{ form.student }}
+        {% for error in form.student.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.title.id_for_label }}">Due title</label>
+        {{ form.title }}
+        {% for error in form.title.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="field-wrap">
+          <label class="field-label" for="{{ form.amount.id_for_label }}">Amount ($)</label>
+          {{ form.amount }}
+          {% for error in form.amount.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" for="{{ form.due_date.id_for_label }}">Due date</label>
+          {{ form.due_date }}
+          {% for error in form.due_date.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+        <label class="flex items-center gap-2 cursor-pointer mt-1">
+          {{ form.is_paid }}
+          <span class="text-sm text-gray-600">Paid</span>
+        </label>
+        <div class="field-wrap">
+          <label class="field-label" for="{{ form.paid_date.id_for_label }}">Paid date</label>
+          {{ form.paid_date }}
+          <p class="text-gray-400 text-xs mt-1.5">Optional. Auto-filled with today's date if left blank when marking as paid.</p>
+          {% for error in form.paid_date.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+        </div>
+      </div>
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.notes.id_for_label }}">Notes</label>
+        {{ form.notes }}
+        {% for error in form.notes.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="flex items-center gap-3 pt-2">
+        <button type="submit" class="btn-primary" style="width:auto; padding-left:2rem; padding-right:2rem;">
+          {% if due %}Save changes{% else %}Save due{% endif %}
+        </button>
+        <a href="{% url 'finance:due_list' %}" class="text-sm text-gray-500 hover:text-red transition-colors font-medium">Cancel</a>
+      </div>
+    </form>
+  </section>
+</div>
+{% endblock %}

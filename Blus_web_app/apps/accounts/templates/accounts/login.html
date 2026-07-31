@@ -18,14 +18,18 @@ Sign in to manage students, events, finances, and communications — all in one 
   <p class="text-gray-500 text-sm mb-8">{{ portal_subtitle }}</p>
 </div>
 
-<!-- Invalid credentials error -->
-{% if form.errors %}
+<!-- Invalid credentials / rate-limit error -->
+{% if request.limited or form.errors %}
 <div class="fade-up d1 mb-5 p-4 bg-red-lt border border-red/20 rounded-xl flex items-start gap-3">
   <svg class="text-red flex-shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 16 16" fill="none">
     <circle cx="8" cy="8" r="6.5" stroke="#E02B20" stroke-width="1.4" />
     <path d="M8 5v3.5M8 10.5v.5" stroke="#E02B20" stroke-width="1.5" stroke-linecap="round" />
   </svg>
+  {% if request.limited %}
+  <p class="text-red text-sm font-medium">Too many login attempts. Please wait a few minutes and try again.</p>
+  {% else %}
   <p class="text-red text-sm font-medium">Invalid email or password. Please try again.</p>
+  {% endif %}
 </div>
 {% endif %}
 

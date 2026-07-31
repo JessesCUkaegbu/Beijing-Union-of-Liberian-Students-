@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} — BLUS{% endblock %}
+{% block nav_blog %}active{% endblock %}
+
+{% block content %}
+
+<section class="relative bg-brand-blue overflow-hidden">
+  <div class="absolute inset-0 opacity-[0.04]"
+       style="background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:60px 60px;"></div>
+  <div class="relative max-w-3xl mx-auto px-6 pt-16 pb-14">
+    <nav class="flex items-center gap-2 text-xs text-white/40 mb-6 fade-up">
+      <a href="/" class="hover:text-white/70 transition-colors">Home</a>
+      <span>›</span>
+      <a href="/news/" class="hover:text-white/70 transition-colors">Blog</a>
+      <span>›</span>
+      <span class="text-white/70">{{ post.title }}</span>
+    </nav>
+    <h1 class="font-display text-3xl md:text-4xl font-extrabold text-white leading-tight mb-4 fade-up delay-1">
+      {{ post.title }}
+    </h1>
+    <div class="flex items-center gap-3 text-white/50 text-sm fade-up delay-2">
+      {% if post.author %}
+      <span>By {{ post.author.get_full_name|default:post.author.email }}</span>
+      <span>·</span>
+      {% endif %}
+      <span>{{ post.published_at|date:"F j, Y" }}</span>
+    </div>
+  </div>
+</section>
+
+<article class="max-w-3xl mx-auto px-6 py-12">
+  {% if post.cover_image %}
+  <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="w-full max-h-96 object-cover rounded-2xl mb-8"/>
+  {% endif %}
+  <div class="text-gray-700 leading-relaxed whitespace-pre-line">{{ post.body }}</div>
+
+  <div class="mt-12 pt-6 border-t border-gray-100">
+    <a href="/news/" class="text-brand-red text-sm font-semibold hover:underline">← Back to all posts</a>
+  </div>
+</article>
+
+{% endblock %}

@@ -1,15 +1,11 @@
 {% extends "base_admin.html" %}
 
-{% comment %}
-  Student dashboard shell. Reuses the exact admin dashboard DESIGN (sidebar,
-  topbar, cards, tables) but swaps the sidebar to show only the things a
-  student member should see — no management links.
-{% endcomment %}
 
 {% block title %} Dashboard — BLUS Member {% endblock %}
 
 {% block sidebar_brand %}
-<span class="w-7 h-7 rounded-lg bg-blue-md flex items-center justify-center text-xs font-bold text-white flex-shrink-0">S</span>
+<span
+  class="w-7 h-7 rounded-lg bg-blue-md flex items-center justify-center text-xs font-bold text-white flex-shrink-0">S</span>
 <div class="flex-1 min-w-0">
   <p class="text-white text-xs font-semibold truncate">Student Portal</p>
   <p class="text-white/40 text-xs truncate">Member area</p>
@@ -19,31 +15,54 @@
 {% block sidebar_nav %}
 <p class="nav-section">General</p>
 <a href="{% url 'students:student_dashboard' %}" class="nav-item {% block nav_dash %}{% endblock %}">
-  <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="1.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="8.5" y="1.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="1.5" y="8.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/><rect x="8.5" y="8.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3"/></svg>
+  <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+    <rect x="1.5" y="1.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3" />
+    <rect x="8.5" y="1.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3" />
+    <rect x="1.5" y="8.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3" />
+    <rect x="8.5" y="8.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.3" />
+  </svg>
   <span class="nav-label">Dashboard</span>
 </a>
 <a href="{% url 'accounts:profile' %}" class="nav-item {% block nav_profile %}{% endblock %}">
-  <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 13c0-2.76 2.46-5 5.5-5s5.5 2.24 5.5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+  <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+    <circle cx="7.5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3" />
+    <path d="M2 13c0-2.76 2.46-5 5.5-5s5.5 2.24 5.5 5" stroke="currentColor" stroke-width="1.3"
+      stroke-linecap="round" />
+  </svg>
   <span class="nav-label">My Profile</span>
 </a>
 
 <p class="nav-section">Community</p>
 <a href="/news/" class="nav-item">
-  <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 3h11M2 6.5h8M2 10h9.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+  <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+    <path d="M2 3h11M2 6.5h8M2 10h9.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+  </svg>
   <span class="nav-label">News</span>
 </a>
 <a href="/leadership/" class="nav-item">
-  <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 13c0-2.76 2.46-5 5.5-5s5.5 2.24 5.5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+  <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+    <circle cx="7.5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3" />
+    <path d="M2 13c0-2.76 2.46-5 5.5-5s5.5 2.24 5.5 5" stroke="currentColor" stroke-width="1.3"
+      stroke-linecap="round" />
+  </svg>
   <span class="nav-label">Leadership</span>
 </a>
 <a href="#" class="nav-item">
-  <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="1.5" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6.5h12M5 1.5v3M10 1.5v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+  <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+    <rect x="1.5" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3" />
+    <path d="M1.5 6.5h12M5 1.5v3M10 1.5v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+  </svg>
   <span class="nav-label">Events</span>
 </a>
 
 <p class="nav-section">Account</p>
 <a href="{% url 'accounts:profile' %}" class="nav-item {% block nav_settings %}{% endblock %}">
-  <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M7.5 1v2M7.5 12v2M1 7.5h2M12 7.5h2M2.9 2.9l1.42 1.42M10.68 10.68l1.42 1.42M2.9 12.1l1.42-1.42M10.68 4.32l1.42-1.42" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+  <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+    <circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.3" />
+    <path
+      d="M7.5 1v2M7.5 12v2M1 7.5h2M12 7.5h2M2.9 2.9l1.42 1.42M10.68 10.68l1.42 1.42M2.9 12.1l1.42-1.42M10.68 4.32l1.42-1.42"
+      stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+  </svg>
   <span class="nav-label">Settings</span>
 </a>
 {% endblock %}

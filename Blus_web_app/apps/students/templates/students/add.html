@@ -1,14 +1,271 @@
 {% extends "base_admin.html" %}
 
-{% block title %}Add Student{% endblock %}
+{% block title %}{% if profile %}Edit Student{% else %}Add Student{% endif %} — BLUS{% endblock %}
+{% block breadcrumb %}{% if profile %}Edit Student{% else %}Add Student{% endif %}{% endblock %}
+{% block nav_students %} active {% endblock %}
 
 {% block admin_content %}
-<section class="rounded-lg bg-white p-6 shadow">
-    <h1 class="mb-4 text-2xl font-bold">Add Student</h1>
-    <form method="post" enctype="multipart/form-data" class="space-y-4">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="rounded bg-slate-900 px-4 py-2 text-white">Save</button>
+<div class="mb-6">
+  <h1 class="font-display text-2xl font-bold text-gray-900">{% if profile %}Edit Student{% else %}Add Student{% endif %}</h1>
+  <p class="text-gray-500 text-sm mt-1">
+    {% if profile %}Update "{{ profile.full_name }}"'s account and profile.{% else %}Transcribe a submitted BULS student survey into a permanent record.{% endif %}
+  </p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 items-start">
+
+  <!-- LEFT: profile summary + section tabs -->
+  <aside class="stat-card">
+    <div class="flex flex-col items-center text-center">
+      {% if profile.image %}
+      <img src="{{ profile.image.url }}" alt="{{ profile.full_name }}" class="w-24 h-24 rounded-full object-cover mb-4"/>
+      {% elif profile %}
+      <div class="w-24 h-24 rounded-full bg-blue-lt flex items-center justify-center text-2xl font-bold text-blue mb-4">
+        {{ profile.user.first_name|first|default:profile.user.email|first|upper }}
+      </div>
+      {% else %}
+      <div class="w-24 h-24 rounded-full bg-gray-50 border border-dashed border-gray-200 flex items-center justify-center text-gray-300 mb-4">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><circle cx="15" cy="10" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M4 25.5C4 19.7 8.9 15.5 15 15.5s11 4.2 11 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </div>
+      {% endif %}
+      <p class="font-display font-bold text-gray-900">{{ profile.full_name|default:"New student" }}</p>
+      <p class="text-gray-400 text-xs mt-0.5">{% if profile %}{{ profile.student_id }}{% else %}Not yet saved{% endif %}</p>
+    </div>
+
+    <nav class="mt-6 space-y-1">
+      <button type="button" class="profile-tab {% if active_tab == 'tab-personal' or not active_tab %}active{% endif %}" data-tab-target="tab-personal">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 13c0-2.76 2.46-5 5.5-5s5.5 2.24 5.5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Personal Information
+      </button>
+      <button type="button" class="profile-tab {% if active_tab == 'tab-academic' %}active{% endif %}" data-tab-target="tab-academic">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1.5 5L7.5 2l6 3-6 3-6-3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M4 6.5v3.5c0 1 1.6 2 3.5 2s3.5-1 3.5-2V6.5" stroke="currentColor" stroke-width="1.3"/></svg>
+        Academic &amp; Residence
+      </button>
+      <button type="button" class="profile-tab {% if active_tab == 'tab-engagement' %}active{% endif %}" data-tab-target="tab-engagement">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 12.5a5.5 5.5 0 0111 0M7.5 2a3 3 0 100 6 3 3 0 000-6z" stroke="currentColor" stroke-width="1.3"/></svg>
+        BULS Engagement
+      </button>
+    </nav>
+  </aside>
+
+  <!-- RIGHT: full-width form -->
+  <section class="stat-card">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div class="mb-5 p-4 bg-red-lt border border-red/20 rounded-xl text-sm font-medium text-red">
+        {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- ══════ TAB: Personal Information ══════ -->
+      <div id="tab-personal" class="profile-tab-panel space-y-6 {% if active_tab and active_tab != 'tab-personal' %}hidden{% endif %}">
+        <div>
+          <h2 class="font-display text-lg font-bold text-gray-900 mb-4">Account</h2>
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="field-wrap">
+                <label class="field-label" for="{{ form.email.id_for_label }}">Email</label>
+                {{ form.email }}
+                {% for error in form.email.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+              </div>
+              <div class="field-wrap">
+                <label class="field-label" for="{{ form.student_id.id_for_label }}">Member/Student ID</label>
+                {{ form.student_id }}
+                {% for error in form.student_id.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="field-wrap">
+                <label class="field-label" for="{{ form.first_name.id_for_label }}">First name</label>
+                {{ form.first_name }}
+                {% for error in form.first_name.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+              </div>
+              <div class="field-wrap">
+                <label class="field-label" for="{{ form.last_name.id_for_label }}">Last name</label>
+                {{ form.last_name }}
+                {% for error in form.last_name.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="field-wrap">
+                <label class="field-label" for="{{ form.password1.id_for_label }}">Password</label>
+                {{ form.password1 }}
+                <p class="text-gray-400 text-xs mt-1.5">{% if profile %}Leave blank to keep the current password.{% endif %}</p>
+                {% for error in form.password1.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+              </div>
+              <div class="field-wrap">
+                <label class="field-label" for="{{ form.password2.id_for_label }}">Confirm password</label>
+                {{ form.password2 }}
+                {% for error in form.password2.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-100 pt-5">
+          <h2 class="font-display text-lg font-bold text-gray-900 mb-4">Personal Information</h2>
+          <div class="space-y-4">
+            <div class="field-wrap">
+              <label class="field-label">Gender</label>
+              <div class="flex items-center gap-6 mt-1">
+                {% for radio in form.gender %}
+                <label class="option-row cursor-pointer">{{ radio.tag }} {{ radio.choice_label }}</label>
+                {% endfor %}
+              </div>
+              {% for error in form.gender.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="field-wrap">
+                <label class="field-label" for="{{ form.date_of_birth.id_for_label }}">Date of birth</label>
+                {{ form.date_of_birth }}
+                {% for error in form.date_of_birth.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+              </div>
+              <div class="field-wrap">
+                <label class="field-label" for="{{ form.wechat_id.id_for_label }}">WeChat ID</label>
+                {{ form.wechat_id }}
+                {% for error in form.wechat_id.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+              </div>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label" for="{{ form.phone_number.id_for_label }}">Phone number</label>
+              {{ form.phone_number }}
+              {% for error in form.phone_number.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+            </div>
+            <div class="field-wrap">
+              <label class="field-label" for="{{ form.image.id_for_label }}">Photo</label>
+              {{ form.image }}
+              <p class="text-gray-400 text-xs mt-1.5">
+                {% if profile %}Optional. Leave blank to keep the current photo.{% else %}Optional.{% endif %}
+              </p>
+              {% for error in form.image.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+          <a href="{% url 'students:list' %}" class="text-sm text-gray-500 hover:text-red transition-colors font-medium">Cancel</a>
+          <button type="button" data-tab-target="tab-academic" class="btn-primary" style="width:auto; padding-left:1.75rem; padding-right:1.75rem;">
+            Next: Academic &amp; Residence →
+          </button>
+        </div>
+      </div>
+
+      <!-- ══════ TAB: Academic & Residence ══════ -->
+      <div id="tab-academic" class="profile-tab-panel space-y-6 {% if active_tab != 'tab-academic' %}hidden{% endif %}">
+        <div>
+          <h2 class="font-display text-lg font-bold text-gray-900 mb-4">Academic Information</h2>
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="field-wrap">
+                <label class="field-label" for="{{ form.university.id_for_label }}">University name</label>
+                {{ form.university }}
+                {% for error in form.university.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+              </div>
+              <div class="field-wrap">
+                <label class="field-label" for="{{ form.degree_level.id_for_label }}">Degree level</label>
+                {{ form.degree_level }}
+                {% for error in form.degree_level.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="field-wrap">
+                <label class="field-label" for="{{ form.course.id_for_label }}">Field of study</label>
+                {{ form.course }}
+                {% for error in form.course.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+              </div>
+              <div class="field-wrap">
+                <label class="field-label" for="{{ form.year_of_study.id_for_label }}">Year of study</label>
+                {{ form.year_of_study }}
+                {% for error in form.year_of_study.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="field-wrap">
+                <label class="field-label" for="{{ form.expected_graduation_year.id_for_label }}">Expected graduation year</label>
+                {{ form.expected_graduation_year }}
+                {% for error in form.expected_graduation_year.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+              </div>
+              <div class="field-wrap">
+                <label class="field-label" for="{{ form.sponsorship_status.id_for_label }}">Sponsorship status</label>
+                {{ form.sponsorship_status }}
+                {% for error in form.sponsorship_status.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-100 pt-5">
+          <h2 class="font-display text-lg font-bold text-gray-900 mb-4">Residence</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="field-wrap">
+              <label class="field-label" for="{{ form.residence_area.id_for_label }}">District/area of residence in Beijing</label>
+              {{ form.residence_area }}
+              {% for error in form.residence_area.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+            </div>
+            <div class="field-wrap">
+              <label class="field-label" for="{{ form.housing_type.id_for_label }}">Dormitory or off-campus?</label>
+              {{ form.housing_type }}
+              {% for error in form.housing_type.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+          <button type="button" data-tab-target="tab-personal" class="text-sm text-gray-500 hover:text-red transition-colors font-medium">← Back</button>
+          <button type="button" data-tab-target="tab-engagement" class="btn-primary" style="width:auto; padding-left:1.75rem; padding-right:1.75rem;">
+            Next: BULS Engagement →
+          </button>
+        </div>
+      </div>
+
+      <!-- ══════ TAB: BULS Engagement ══════ -->
+      <div id="tab-engagement" class="profile-tab-panel space-y-6 {% if active_tab != 'tab-engagement' %}hidden{% endif %}">
+        <div>
+          <h2 class="font-display text-lg font-bold text-gray-900 mb-4">BULS Engagement</h2>
+          <div class="space-y-4">
+            <label class="flex items-center gap-2 cursor-pointer">
+              {{ form.is_active }}
+              <span class="text-sm text-gray-600">Registered BULS member</span>
+            </label>
+
+            <div class="field-wrap">
+              <label class="field-label">Would you like to participate in BULS activities?</label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
+                {% for checkbox in form.activity_interests %}
+                <label class="option-row cursor-pointer">{{ checkbox.tag }} {{ checkbox.choice_label }}</label>
+                {% endfor %}
+              </div>
+              {% for error in form.activity_interests.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+            </div>
+
+            <div class="field-wrap">
+              <label class="field-label" for="{{ form.challenges.id_for_label }}">Challenges facing as a student in Beijing</label>
+              {{ form.challenges }}
+              {% for error in form.challenges.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+            </div>
+
+            <div class="field-wrap">
+              <label class="field-label" for="{{ form.suggestions.id_for_label }}">Suggestions for improving BULS services</label>
+              {{ form.suggestions }}
+              {% for error in form.suggestions.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+          <button type="button" data-tab-target="tab-academic" class="text-sm text-gray-500 hover:text-red transition-colors font-medium">← Back</button>
+          <div class="flex-1"></div>
+          <a href="{% url 'students:list' %}" class="rounded-xl border border-gray-200 px-6 py-3.5 text-sm font-semibold text-gray-600 transition-colors hover:bg-gray-50">
+            Discard Changes
+          </a>
+          <button type="submit" class="btn-primary" style="width:auto; padding-left:2rem; padding-right:2rem;">
+            {% if profile %}Save Changes{% else %}Save Student{% endif %}
+          </button>
+        </div>
+      </div>
     </form>
-</section>
+  </section>
+</div>
 {% endblock %}
