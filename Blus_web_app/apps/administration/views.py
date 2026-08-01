@@ -1,13 +1,28 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q, Sum
 from django.db.models.functions import TruncMonth
-from django.shortcuts import redirect, render
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.views.decorators.http import require_POST
+from django_ratelimit.decorators import ratelimit
 
 from apps.blog.models import Post
 from apps.events.models import Event
 from apps.finance.models import Due, Loan
+from apps.leadership.models import LeadershipMember
 from apps.students.models import StudentProfile
+
+from .forms import ContactMessageForm
+from .models import ContactMessage
+
+HOME_POSTS_LIMIT = 3
+HOME_LEADERSHIP_LIMIT = 4
+
+
+def _is_admin(user):
+    return user.is_staff or getattr(user, "is_admin", False)
 
 
 def _month_start(date):
@@ -146,3 +161,85 @@ def dashboard_view(request):
         "recent_students": recent_students,
         "recent_students_count": len(recent_students),
     })
+
+
+def _public_site_counters():
+    """Shared by the home and about pages — same three headline numbers on both."""
+    today = timezone.now().date()
+    return {
+        "total_students": StudentProfile.objects.count(),
+        "events_this_year": Event.objects.filter(event_date__year=today.year).count(),
+        "university_count": StudentProfile.objects.exclude(university="").values("university").distinct().count(),
+    }
+
+
+def home_view(request):
+    """Public homepage — hero counters, latest posts, and leadership preview all come from the database."""
+    latest_posts = (
+        Post.objects.select_related("author")
+        .filter(is_published=True)
+        .order_by("-published_at")[:HOME_POSTS_LIMIT]
+    )
+    leadership_preview = LeadershipMember.objects.filter(is_active=True)[:HOME_LEADERSHIP_LIMIT]
+
+    return render(request, "frontend/home.html", {
+        **_public_site_counters(),
+        "latest_posts": latest_posts,
+        "leadership_preview": leadership_preview,
+    })
+
+
+def about_view(request):
+    """Public About page — the stats grid comes from the database (Satisfaction stays static; no source for it)."""
+    return render(request, "frontend/about.html", _public_site_counters())
+
+
+# ── Contact form (public submit + admin-only moderation) ───────────────────
+
+@ratelimit(key="ip", rate="10/h", method="POST", block=False)
+@require_POST
+def contact_message_create_view(request):
+    """
+    Public endpoint the /contact/ page's JS posts to. Returns JSON so the
+    page can swap in its existing success/error UI without a full reload.
+    Submissions land in the same admin Messages inbox as profile requests.
+    """
+    if request.limited:
+        return JsonResponse(
+            {"ok": False, "error": "Too many messages sent. Please try again later."}, status=429,
+        )
+
+    form = ContactMessageForm(request.POST)
+    if form.is_valid():
+        form.save()
+        return JsonResponse({"ok": True})
+    return JsonResponse({"ok": False, "errors": form.errors}, status=400)
+
+
+@login_required
+@require_POST
+def contact_toggle_resolved_view(request, pk):
+    """Admin-only: flip a contact message between pending and resolved."""
+    if not _is_admin(request.user):
+        return redirect("students:student_dashboard")
+
+    contact_message = get_object_or_404(ContactMessage, pk=pk)
+    contact_message.is_resolved = not contact_message.is_resolved
+    contact_message.save(update_fields=["is_resolved"])
+    status = "resolved" if contact_message.is_resolved else "reopened"
+    messages.success(request, f"Marked the message from {contact_message.full_name} as {status}.")
+    return redirect("students:messages")
+
+
+@login_required
+@require_POST
+def contact_delete_view(request, pk):
+    """Admin-only Delete action. POST-only so a stray GET can't trigger it."""
+    if not _is_admin(request.user):
+        return redirect("students:student_dashboard")
+
+    contact_message = get_object_or_404(ContactMessage, pk=pk)
+    name = contact_message.full_name
+    contact_message.delete()
+    messages.success(request, f"Deleted the message from {name}.")
+    return redirect("students:messages")

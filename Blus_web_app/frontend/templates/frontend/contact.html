@@ -105,8 +105,11 @@
           </div>
 
           <!-- Form -->
-          <form id="contact-form" class="space-y-5" onsubmit="handleSubmit(event)">
+          <form id="contact-form" class="space-y-5" method="post" action="{% url 'contact_submit' %}" onsubmit="handleSubmit(event)">
+            {% csrf_token %}
             <h3 class="font-display font-bold text-xl text-gray-900 mb-6">Send us a message</h3>
+
+            <div id="form-error" class="hidden p-4 bg-brand-red-lt border border-brand-red/20 rounded-xl text-sm font-medium text-brand-red"></div>
 
             <div class="grid grid-cols-2 gap-4">
               <div>
@@ -157,18 +160,30 @@
 <script>
   function handleSubmit(e) {
     e.preventDefault();
+    const form = document.getElementById('contact-form');
     const btn = document.getElementById('submit-btn');
     const label = document.getElementById('btn-label');
+    const errorBox = document.getElementById('form-error');
 
-    // Brief loading state
     btn.disabled = true;
     label.textContent = 'Sending…';
+    errorBox.classList.add('hidden');
 
-    setTimeout(() => {
-      document.getElementById('contact-form').classList.add('hidden');
-      const success = document.getElementById('form-success');
-      success.classList.remove('hidden');
-    }, 900);
+    fetch(form.action, { method: 'POST', body: new FormData(form) })
+      .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
+      .then(({ ok, data }) => {
+        if (!ok || !data.ok) {
+          throw new Error(data.error || "Please check your details and try again.");
+        }
+        form.classList.add('hidden');
+        document.getElementById('form-success').classList.remove('hidden');
+      })
+      .catch((err) => {
+        btn.disabled = false;
+        label.textContent = 'Send Message';
+        errorBox.textContent = err.message || 'Something went wrong. Please try again.';
+        errorBox.classList.remove('hidden');
+      });
   }
 
   function resetForm() {
@@ -178,6 +193,7 @@
     btn.disabled = false;
     document.getElementById('btn-label').textContent = 'Send Message';
     document.getElementById('form-success').classList.add('hidden');
+    document.getElementById('form-error').classList.add('hidden');
   }
 </script>
 

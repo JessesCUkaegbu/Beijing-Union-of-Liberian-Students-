@@ -54,15 +54,21 @@
       <!-- Stats grid -->
       <div class="grid grid-cols-2 gap-5" data-aos="fade-left" data-aos-delay="100">
         <div class="bg-brand-blue rounded-2xl p-8 text-center" data-aos="zoom-in" data-aos-delay="0">
-          <p class="font-display text-5xl font-extrabold text-white">500<span class="text-brand-red">+</span></p>
+          <p class="font-display text-5xl font-extrabold text-white">
+            <span class="stat-count" data-target="{{ total_students }}">0</span><span class="text-brand-red">+</span>
+          </p>
           <p class="text-white/50 text-sm mt-2 uppercase tracking-widest">Active Students</p>
         </div>
         <div class="bg-brand-red-lt rounded-2xl p-8 text-center border border-brand-red/10" data-aos="zoom-in" data-aos-delay="80">
-          <p class="font-display text-5xl font-extrabold text-brand-blue">12<span class="text-brand-red">+</span></p>
+          <p class="font-display text-5xl font-extrabold text-brand-blue">
+            <span class="stat-count" data-target="{{ university_count }}">0</span><span class="text-brand-red">+</span>
+          </p>
           <p class="text-gray-400 text-sm mt-2 uppercase tracking-widest">Universities</p>
         </div>
         <div class="bg-brand-red-lt rounded-2xl p-8 text-center border border-brand-red/10" data-aos="zoom-in" data-aos-delay="160">
-          <p class="font-display text-5xl font-extrabold text-brand-blue">80<span class="text-brand-red">+</span></p>
+          <p class="font-display text-5xl font-extrabold text-brand-blue">
+            <span class="stat-count" data-target="{{ events_this_year }}">0</span><span class="text-brand-red">+</span>
+          </p>
           <p class="text-gray-400 text-sm mt-2 uppercase tracking-widest">Events/Year</p>
         </div>
         <div class="bg-brand-blue rounded-2xl p-8 text-center" data-aos="zoom-in" data-aos-delay="240">
@@ -210,6 +216,27 @@
     }, { threshold: 0.1 });
     obs.observe(line.parentElement);
   }
+
+  // Count up the stats grid (Students / Universities / Events per Year)
+  (function () {
+    const counters = document.querySelectorAll('.stat-count');
+    if (!counters.length) return;
+    function animateCounter(el) {
+      const target = +el.dataset.target;
+      const duration = 1400, step = 16;
+      const increment = target / (duration / step);
+      let current = 0;
+      const tick = setInterval(() => {
+        current += increment;
+        if (current >= target) { el.textContent = target; clearInterval(tick); }
+        else el.textContent = Math.floor(current);
+      }, step);
+    }
+    const statsObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { animateCounter(e.target); statsObs.unobserve(e.target); } });
+    }, { threshold: 0.5 });
+    counters.forEach(c => statsObs.observe(c));
+  })();
 </script>
 
 {% endblock %}

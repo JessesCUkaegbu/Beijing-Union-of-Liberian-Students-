@@ -1,0 +1,147 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Leadership Team — BLUS{% endblock %}
+{% block breadcrumb %}Leadership Team{% endblock %}
+{% block nav_leadership %} active {% endblock %}
+
+{% block admin_content %}
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="font-display text-2xl font-bold text-gray-900">Leadership Team</h1>
+    <p class="text-gray-500 text-sm mt-1">Who shows up on the public leadership page.</p>
+  </div>
+  <a href="{% url 'leadership:add' %}" class="btn-primary" style="width:auto; padding-left:1.5rem; padding-right:1.5rem;">
+    Add member
+  </a>
+</div>
+
+<section class="stat-card !p-0 overflow-hidden">
+  <div class="overflow-x-auto">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Member</th>
+          <th>Position</th>
+          <th>Order</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for member in page_obj %}
+        <tr>
+          <td>
+            <div class="flex items-center gap-3">
+              {% if member.photo %}
+              <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="w-8 h-8 rounded-full object-cover flex-shrink-0"/>
+              {% else %}
+              <div class="flex h-8 w-8 items-center justify-center rounded-full border border-blue/10 bg-blue-lt text-xs font-bold text-blue flex-shrink-0">
+                {{ member.initials }}
+              </div>
+              {% endif %}
+              <a href="{% url 'leadership:detail' member.pk %}" class="font-medium text-gray-900 hover:text-red transition-colors">
+                {{ member.name }}
+              </a>
+            </div>
+          </td>
+          <td>{{ member.position }}</td>
+          <td>{{ member.display_order }}</td>
+          <td>
+            {% if member.is_active %}
+            <span class="pill-active">Active</span>
+            {% else %}
+            <span class="pill-inactive">Hidden</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="flex items-center gap-1">
+              <button type="button" title="View" class="member-view-btn flex h-7 w-7 items-center justify-center rounded-lg border border-gray-100 bg-gray-50 text-gray-400 transition-colors hover:bg-blue-lt hover:text-blue"
+                data-title="{{ member.name }}"
+                data-meta="{{ member.position }}|{% if member.is_active %}Shown on public site{% else %}Hidden from public site{% endif %}"
+                data-description=""
+                data-image="{% if member.photo %}{{ member.photo.url }}{% endif %}">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6C2.5 3.5 4 2 6 2s3.5 1.5 5 4c-1.5 2.5-3 4-5 4S2.5 8.5 1 6z" stroke="currentColor" stroke-width="1.2"/><circle cx="6" cy="6" r="1.5" stroke="currentColor" stroke-width="1.2"/></svg>
+              </button>
+              <a href="{% url 'leadership:edit' member.pk %}" title="Edit"
+                class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-100 bg-gray-50 text-gray-400 transition-colors hover:bg-blue-lt hover:text-blue">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8.5 1.5l2 2L4 10H2V8L8.5 1.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+              <form method="post" action="{% url 'leadership:delete' member.pk %}"
+                data-confirm="Remove &quot;{{ member.name }}&quot; from the leadership team? This can't be undone.">
+                {% csrf_token %}
+                <button type="submit" title="Delete"
+                  class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-100 bg-gray-50 text-gray-400 transition-colors hover:bg-red-lt hover:text-red">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 3.5h7M4.5 3.5v-1a1 1 0 011-1h1a1 1 0 011 1v1M4.5 3.5l.4 6.5h2.2l.4-6.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="py-8 text-center text-sm text-gray-400">No leadership members yet — add your first one.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="flex items-center justify-between border-t border-gray-100 px-6 py-3.5">
+    <p class="text-xs text-gray-400">
+      Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ page_obj.paginator.count }} member{{ page_obj.paginator.count|pluralize }}
+    </p>
+    {% if page_obj.paginator.num_pages > 1 %}
+    <div class="flex items-center gap-1">
+      {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}"
+        class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-gray-400 transition-colors hover:bg-gray-50">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M7.5 9.5L3 5.5l4.5-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      {% else %}
+      <span class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-100 text-gray-200 cursor-not-allowed">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M7.5 9.5L3 5.5l4.5-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+        <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-blue text-xs font-medium text-white">{{ num }}</span>
+        {% else %}
+        <a href="?page={{ num }}"
+          class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-xs font-medium text-gray-500 transition-colors hover:bg-gray-50">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}"
+        class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-200 text-gray-400 transition-colors hover:bg-gray-50">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M3.5 9.5L8 5.5 3.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      {% else %}
+      <span class="flex h-7 w-7 items-center justify-center rounded-lg border border-gray-100 text-gray-200 cursor-not-allowed">
+        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M3.5 9.5L8 5.5 3.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Member view modal (opened by the eye icon above) -->
+<div id="member-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4" aria-hidden="true">
+  <div class="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
+    <div class="mb-4 flex items-start justify-between gap-4">
+      <h3 data-modal-title class="font-display text-xl font-bold text-gray-900"></h3>
+      <button type="button" data-modal-close class="flex-shrink-0 text-gray-400 transition-colors hover:text-gray-700">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <img data-modal-image class="mb-4 hidden h-40 w-full rounded-xl object-cover" alt=""/>
+    <div data-modal-meta class="mb-4 flex flex-wrap gap-x-5 gap-y-1 text-sm text-gray-500"></div>
+    <p data-modal-description class="whitespace-pre-line text-sm leading-relaxed text-gray-700"></p>
+    <div class="mt-6 flex justify-end">
+      <button type="button" data-modal-close class="text-sm font-medium text-gray-500 transition-colors hover:text-red">Close</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

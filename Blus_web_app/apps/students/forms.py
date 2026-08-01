@@ -76,7 +76,7 @@ class StudentForm(forms.Form):
         label="Suggestions for improving BULS services", widget=forms.Textarea(attrs={"rows": 4}), required=False,
     )
 
-    def __init__(self, *args, profile=None, **kwargs):
+    def __init__(self, *args, profile=None, readonly=False, **kwargs):
         self.profile = profile  # a StudentProfile instance when editing, else None
         super().__init__(*args, **kwargs)
 
@@ -110,6 +110,13 @@ class StudentForm(forms.Form):
                 widget.attrs.setdefault("class", "form-input-file")
             else:
                 widget.attrs.setdefault("class", "form-input")
+
+        if readonly:
+            # disabled=True (not just a "readonly" HTML attr) also makes Django
+            # ignore any submitted value for the field and always use initial —
+            # safe by construction even if a disabled input were tampered with.
+            for field in self.fields.values():
+                field.disabled = True
 
     def clean_email(self):
         email = self.cleaned_data["email"].strip().lower()

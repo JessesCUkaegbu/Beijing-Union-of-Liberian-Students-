@@ -88,6 +88,7 @@ INSTALLED_APPS = [
     "apps.events",
     "apps.finance",
     "apps.blog",
+    "apps.leadership",
 ]
 
 # ── Middleware ─────────────────────────────────────────────────────────────────
@@ -256,9 +257,12 @@ LOGGING = {
             "formatter": "verbose" if DEBUG else "simple",
         },
     },
+    # Root stays at WARNING even when LOG_LEVEL=DEBUG — third-party libraries
+    # (boto3, urllib3, PIL, ...) are extremely chatty at DEBUG and aren't what
+    # LOG_LEVEL is meant to control. Use the "django" logger below for that.
     "root": {
         "handlers": ["console"],
-        "level": LOG_LEVEL,
+        "level": "WARNING",
     },
     "loggers": {
         "django": {
@@ -272,6 +276,13 @@ LOGGING = {
             "propagate": False,
         },
         "django.security": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+        # The autoreloader logs one DEBUG line per watched file on every scan —
+        # pure noise, not app behavior, so it's excluded even at LOG_LEVEL=DEBUG.
+        "django.utils.autoreload": {
             "handlers": ["console"],
             "level": "WARNING",
             "propagate": False,

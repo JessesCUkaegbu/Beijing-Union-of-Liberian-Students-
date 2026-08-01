@@ -89,5 +89,7 @@ def logout_view(request):
 
 @login_required
 def profile_view(request):
-    """Placeholder so accounts:profile resolves. Real editing comes later."""
+    """Admin's own account settings. Students have their own read-only page."""
+    if not (request.user.is_staff or getattr(request.user, "is_admin", False)):
+        return redirect("students:profile")
     return render(request, "accounts/profile.html")

@@ -100,6 +100,17 @@
           <a href="{% url 'blog:list' %}" class="nav-subitem">View Posts</a>
         </div>
       </div>
+      <div class="nav-group">
+        <button type="button" class="nav-item nav-item-toggle {% block nav_leadership %}{% endblock %}" data-toggle="leadership-submenu" aria-expanded="false">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 13c0-2.76 2.46-5 5.5-5s5.5 2.24 5.5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M11.5 3.5a2 2 0 010 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          <span class="nav-label">Leadership</span>
+          <svg class="nav-chevron" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div id="leadership-submenu" class="nav-submenu">
+          <a href="{% url 'leadership:add' %}" class="nav-subitem">Add Member</a>
+          <a href="{% url 'leadership:list' %}" class="nav-subitem">View Members</a>
+        </div>
+      </div>
 
       <p class="nav-section">Finance</p>
       <a href="{% url 'finance:overview' %}" class="nav-item {% block nav_finance %}{% endblock %}">
@@ -130,10 +141,10 @@
       </div>
 
       <p class="nav-section">Profile</p>
-      <a href="#" class="nav-item">
+      <a href="{% url 'students:messages' %}" class="nav-item {% block nav_messages %}{% endblock %}">
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 12.5a5.5 5.5 0 0111 0M7.5 2a3 3 0 100 6 3 3 0 000-6z" stroke="currentColor" stroke-width="1.3"/></svg>
         <span class="nav-label">Messages</span>
-        <span class="badge">{{ message_count|default:"" }}</span>
+        {% if message_count %}<span class="badge">{{ message_count }}</span>{% endif %}
       </a>
       <a href="{% url 'accounts:profile' %}" class="nav-item {% block nav_settings %}{% endblock %}">
         <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="2" stroke="currentColor" stroke-width="1.3"/><path d="M7.5 1v2M7.5 12v2M1 7.5h2M12 7.5h2M2.9 2.9l1.42 1.42M10.68 10.68l1.42 1.42M2.9 12.1l1.42-1.42M10.68 4.32l1.42-1.42" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>

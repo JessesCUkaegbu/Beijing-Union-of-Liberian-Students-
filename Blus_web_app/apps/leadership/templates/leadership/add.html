@@ -1,0 +1,71 @@
+{% extends "base_admin.html" %}
+
+{% block title %}{% if member %}Edit Member{% else %}Add Member{% endif %} — BLUS{% endblock %}
+{% block breadcrumb %}{% if member %}Edit Member{% else %}Add Member{% endif %}{% endblock %}
+{% block nav_leadership %} active {% endblock %}
+
+{% block admin_content %}
+<div class="max-w-2xl">
+  <div class="mb-6">
+    <h1 class="font-display text-2xl font-bold text-gray-900">{% if member %}Edit Member{% else %}Add Member{% endif %}</h1>
+    <p class="text-gray-500 text-sm mt-1">
+      {% if member %}Update the details for "{{ member.name }}".{% else %}Add a new person to the public leadership page.{% endif %}
+    </p>
+  </div>
+
+  <section class="stat-card">
+    <form method="post" enctype="multipart/form-data" class="space-y-5">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div class="p-4 bg-red-lt border border-red/20 rounded-xl text-sm font-medium text-red">
+        {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.name.id_for_label }}">Full name</label>
+        {{ form.name }}
+        {% for error in form.name.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.position.id_for_label }}">Position</label>
+        {{ form.position }}
+        {% for error in form.position.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.photo.id_for_label }}">Photo</label>
+        {% if member.photo %}
+        <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="w-20 h-20 object-cover rounded-xl mb-2"/>
+        {% endif %}
+        {{ form.photo }}
+        <p class="text-gray-400 text-xs mt-1.5">
+          {% if member %}Optional. Leave blank to keep the current photo.{% else %}Optional. Shows initials on a gradient card if left blank.{% endif %}
+        </p>
+        {% for error in form.photo.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <div class="field-wrap">
+        <label class="field-label" for="{{ form.display_order.id_for_label }}">Display order</label>
+        {{ form.display_order }}
+        <p class="text-gray-400 text-xs mt-1.5">Lower numbers appear first on the public page.</p>
+        {% for error in form.display_order.errors %}<p class="text-red text-xs mt-1.5">{{ error }}</p>{% endfor %}
+      </div>
+
+      <label class="flex items-center gap-2 cursor-pointer">
+        {{ form.is_active }}
+        <span class="text-sm text-gray-600">Show on public site</span>
+      </label>
+
+      <div class="flex items-center gap-3 pt-2">
+        <button type="submit" class="btn-primary" style="width:auto; padding-left:2rem; padding-right:2rem;">
+          {% if member %}Save changes{% else %}Save member{% endif %}
+        </button>
+        <a href="{% url 'leadership:list' %}" class="text-sm text-gray-500 hover:text-red transition-colors font-medium">Cancel</a>
+      </div>
+    </form>
+  </section>
+</div>
+{% endblock %}

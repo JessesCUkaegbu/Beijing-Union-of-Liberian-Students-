@@ -102,3 +102,22 @@ class StudentProfile(models.Model):
     def activity_interests_display(self):
         labels = dict(self.ActivityInterest.choices)
         return [labels.get(value, value) for value in (self.activity_interests or [])]
+
+
+class ProfileChangeRequest(models.Model):
+    """
+    A student's request to change their own profile — students can't edit
+    their StudentProfile directly, only ask an admin to make the change.
+    """
+
+    student = models.ForeignKey(StudentProfile, on_delete=models.CASCADE, related_name="change_requests")
+    message = models.TextField()
+    is_resolved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        ordering = ("-created_at",)
+
+    def __str__(self):
+        status = "resolved" if self.is_resolved else "pending"
+        return f"Change request from {self.student.full_name} ({status})"

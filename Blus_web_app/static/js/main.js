@@ -136,6 +136,9 @@ document.addEventListener("DOMContentLoaded", function () {
   initViewModal("student-modal", ".student-view-btn");
   initViewModal("due-modal", ".due-view-btn");
   initViewModal("loan-modal", ".loan-view-btn");
+  initViewModal("request-modal", ".request-open-btn");
+  initViewModal("message-modal", ".message-view-btn");
+  initViewModal("member-modal", ".member-view-btn");
 
   // Auto-dismiss flash messages (login/register/logout + dashboard alerts)
   document.querySelectorAll(".flash-message").forEach(function (el) {

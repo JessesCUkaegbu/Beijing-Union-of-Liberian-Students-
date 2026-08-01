@@ -44,21 +44,21 @@
       <div class="flex gap-8 mt-12 fade-up delay-4">
         <div>
           <p class="font-display text-3xl font-bold text-white">
-            <span class="stat-count" data-target="500">0</span><span class="text-brand-red">+</span>
+            <span class="stat-count" data-target="{{ total_students }}">0</span><span class="text-brand-red">+</span>
           </p>
           <p class="text-white/50 text-xs mt-1 uppercase tracking-widest">Students</p>
         </div>
         <div class="w-px bg-white/10"></div>
         <div>
           <p class="font-display text-3xl font-bold text-white">
-            <span class="stat-count" data-target="80">0</span><span class="text-brand-red">+</span>
+            <span class="stat-count" data-target="{{ events_this_year }}">0</span><span class="text-brand-red">+</span>
           </p>
           <p class="text-white/50 text-xs mt-1 uppercase tracking-widest">Events/Year</p>
         </div>
         <div class="w-px bg-white/10"></div>
         <div>
           <p class="font-display text-3xl font-bold text-white">
-            <span class="stat-count" data-target="12">0</span><span class="text-brand-red">+</span>
+            <span class="stat-count" data-target="{{ university_count }}">0</span><span class="text-brand-red">+</span>
           </p>
           <p class="text-white/50 text-xs mt-1 uppercase tracking-widest">Universities</p>
         </div>
@@ -179,56 +179,28 @@
       <a href="/leadership/" class="btn-outline self-start md:self-auto">View Full Team →</a>
     </div>
 
+    {% if leadership_preview %}
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <!-- Card 1 -->
-      <div class="leader-card group relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-brand-blue to-brand-blue-md cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
-           data-aos="zoom-in" data-aos-delay="0">
+      {% for member in leadership_preview %}
+      <div class="leader-card group relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br {% cycle 'from-brand-blue to-brand-blue-md' 'from-[#1e3a8a] to-brand-blue-md' 'from-brand-blue to-[#1e40af]' 'from-[#1e2f6b] to-brand-blue' %} cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
+           data-aos="zoom-in" data-aos-delay="{% cycle '0' '80' '160' '240' %}">
+        {% if member.photo %}
+        <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="absolute inset-0 w-full h-full object-cover"/>
+        {% endif %}
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
         <div class="slide-info absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent pt-10">
-          <p class="font-display font-bold text-white text-base">James Kollie</p>
-          <p class="text-white/60 text-xs mt-0.5">President</p>
+          <p class="font-display font-bold text-white text-base">{{ member.name }}</p>
+          <p class="text-white/60 text-xs mt-0.5">{{ member.position }}</p>
         </div>
         <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-brand-red flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
       </div>
-      <!-- Card 2 -->
-      <div class="leader-card group relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-[#1e3a8a] to-brand-blue-md cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
-           data-aos="zoom-in" data-aos-delay="80">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
-        <div class="slide-info absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent pt-10">
-          <p class="font-display font-bold text-white text-base">Mary Sumo</p>
-          <p class="text-white/60 text-xs mt-0.5">Vice President</p>
-        </div>
-        <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-brand-red flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </div>
-      <!-- Card 3 -->
-      <div class="leader-card group relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-brand-blue to-[#1e40af] cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
-           data-aos="zoom-in" data-aos-delay="160">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
-        <div class="slide-info absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent pt-10">
-          <p class="font-display font-bold text-white text-base">Anthony Freeman</p>
-          <p class="text-white/60 text-xs mt-0.5">Secretary-General</p>
-        </div>
-        <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-brand-red flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </div>
-      <!-- Card 4 -->
-      <div class="leader-card group relative rounded-2xl overflow-hidden aspect-[3/4] bg-gradient-to-br from-[#1e2f6b] to-brand-blue cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
-           data-aos="zoom-in" data-aos-delay="240">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"></div>
-        <div class="slide-info absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent pt-10">
-          <p class="font-display font-bold text-white text-base">Rebecca Toe</p>
-          <p class="text-white/60 text-xs mt-0.5">Treasurer</p>
-        </div>
-        <div class="absolute top-3 right-3 w-7 h-7 rounded-full bg-brand-red flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </div>
+      {% endfor %}
     </div>
+    {% else %}
+    <p class="text-center text-gray-400 py-10">The leadership team hasn't been added yet.</p>
+    {% endif %}
   </div>
 </section>
 
@@ -243,58 +215,35 @@
       <a href="/news/" class="btn-outline self-start md:self-auto">All Posts →</a>
     </div>
 
+    {% if latest_posts %}
     <div class="grid md:grid-cols-3 gap-6">
-      <!-- Post 1 -->
+      {% for post in latest_posts %}
       <article class="blog-card group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300"
-               data-aos="fade-up" data-aos-delay="0">
-        <div class="aspect-video overflow-hidden bg-gradient-to-br from-brand-blue-lt to-brand-red-lt flex items-center justify-center">
+               data-aos="fade-up" data-aos-delay="{% cycle '0' '100' '200' %}">
+        <a href="{% url 'blog_detail' post.slug %}" class="aspect-video overflow-hidden bg-gradient-to-br from-brand-blue-lt to-brand-red-lt flex items-center justify-center">
+          {% if post.cover_image %}
+          <img src="{{ post.cover_image.url }}" alt="{{ post.title }}" class="w-full h-full object-cover"/>
+          {% else %}
           <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M8 12h24M8 18h16M8 24h20" stroke="#1A2B6B" stroke-opacity="0.2" stroke-width="2.5" stroke-linecap="round"/></svg>
-        </div>
+          {% endif %}
+        </a>
         <div class="p-6">
-          <p class="text-xs text-brand-red font-semibold uppercase tracking-widest mb-2">Apr 20, 2025</p>
-          <h3 class="font-display font-bold text-lg text-gray-900 leading-snug mb-2 group-hover:text-brand-red transition-colors">Annual Cultural Night 2025: A Night to Remember</h3>
-          <p class="text-gray-500 text-sm line-clamp-2">An extraordinary evening of Liberian culture, music, and community spirit came alive at the BLUS annual gala.</p>
+          <p class="text-xs text-brand-red font-semibold uppercase tracking-widest mb-2">{{ post.published_at|date:"M j, Y" }}</p>
+          <h3 class="font-display font-bold text-lg text-gray-900 leading-snug mb-2 group-hover:text-brand-red transition-colors">
+            <a href="{% url 'blog_detail' post.slug %}">{{ post.title }}</a>
+          </h3>
+          <p class="text-gray-500 text-sm line-clamp-2">{{ post.summary }}</p>
           <div class="flex items-center justify-between mt-4">
-            <span class="text-xs text-gray-400">By James Kollie</span>
-            <a href="/news/" class="text-brand-red text-xs font-semibold hover:underline">Read more →</a>
+            <span class="text-xs text-gray-400">By {{ post.author.get_full_name|default:post.author.email|default:"BLUS Team" }}</span>
+            <a href="{% url 'blog_detail' post.slug %}" class="text-brand-red text-xs font-semibold hover:underline">Read more →</a>
           </div>
         </div>
       </article>
-
-      <!-- Post 2 -->
-      <article class="blog-card group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300"
-               data-aos="fade-up" data-aos-delay="100">
-        <div class="aspect-video overflow-hidden bg-gradient-to-br from-brand-red-lt to-brand-blue-lt flex items-center justify-center">
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M8 12h24M8 18h16M8 24h20" stroke="#E02B20" stroke-opacity="0.2" stroke-width="2.5" stroke-linecap="round"/></svg>
-        </div>
-        <div class="p-6">
-          <p class="text-xs text-brand-red font-semibold uppercase tracking-widest mb-2">Mar 15, 2025</p>
-          <h3 class="font-display font-bold text-lg text-gray-900 leading-snug mb-2 group-hover:text-brand-red transition-colors">Student Welfare Fund: How to Apply Before June</h3>
-          <p class="text-gray-500 text-sm line-clamp-2">BLUS has opened applications for the student welfare fund. Here's everything you need to know to apply.</p>
-          <div class="flex items-center justify-between mt-4">
-            <span class="text-xs text-gray-400">By Mary Sumo</span>
-            <a href="/news/" class="text-brand-red text-xs font-semibold hover:underline">Read more →</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- Post 3 -->
-      <article class="blog-card group rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300"
-               data-aos="fade-up" data-aos-delay="200">
-        <div class="aspect-video overflow-hidden bg-gradient-to-br from-brand-blue-lt to-brand-red-lt flex items-center justify-center">
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M8 12h24M8 18h16M8 24h20" stroke="#1A2B6B" stroke-opacity="0.2" stroke-width="2.5" stroke-linecap="round"/></svg>
-        </div>
-        <div class="p-6">
-          <p class="text-xs text-brand-red font-semibold uppercase tracking-widest mb-2">Feb 8, 2025</p>
-          <h3 class="font-display font-bold text-lg text-gray-900 leading-snug mb-2 group-hover:text-brand-red transition-colors">New Executive Board Announced for 2025-26</h3>
-          <p class="text-gray-500 text-sm line-clamp-2">The BLUS general assembly has elected a new executive board to lead the association into the new academic year.</p>
-          <div class="flex items-center justify-between mt-4">
-            <span class="text-xs text-gray-400">By Anthony Freeman</span>
-            <a href="/news/" class="text-brand-red text-xs font-semibold hover:underline">Read more →</a>
-          </div>
-        </div>
-      </article>
+      {% endfor %}
     </div>
+    {% else %}
+    <p class="text-center text-gray-400 py-10">No posts published yet. Check back soon!</p>
+    {% endif %}
   </div>
 </section>
 
